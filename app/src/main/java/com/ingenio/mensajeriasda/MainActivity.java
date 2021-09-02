@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Toast.makeText(getApplicationContext(),isConnected+"01",Toast.LENGTH_LONG).show();
-        Log.i("inicio","inicio");
+        //Log.i("inicio","inicio");
 
         Intent i2 = new Intent(MainActivity.this,MainActivity.class);
         BootReceiver bootReceiver = new BootReceiver();
