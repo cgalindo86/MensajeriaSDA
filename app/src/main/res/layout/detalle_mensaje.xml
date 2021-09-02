@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/atras"
+            android:src="@drawable/boton_atras"
+            android:background="#B6EDF6"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <LinearLayout
+            android:id="@+id/bloque"
+            android:layout_below="@id/atras"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/titulo"
+                android:text="INSTANT MESSAGING SDA, informa:"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="#992A52"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Fecha:"
+                    android:textSize="20dp"
+                    android:textColor="#992A52"
+                    android:textAlignment="viewEnd"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end" />
+                <TextView
+                    android:id="@+id/fecha"
+                    android:textSize="20dp"
+                    android:text="18 de enero"
+                    android:textColor="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Estudiante:"
+                    android:textSize="20dp"
+                    android:textColor="#992A52"
+                    android:textAlignment="viewEnd"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end" />
+                <TextView
+                    android:id="@+id/alumno"
+                    android:textSize="20dp"
+                    android:text="Alumno de prueba"
+                    android:textColor="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Asignatura:"
+                    android:textSize="20dp"
+                    android:textColor="#992A52"
+                    android:textAlignment="viewEnd"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end" />
+                <TextView
+                    android:id="@+id/asignatura"
+                    android:textSize="20dp"
+                    android:text="Matemática"
+                    android:textColor="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Asunto:"
+                    android:textSize="20dp"
+                    android:textColor="#992A52"
+                    android:textAlignment="viewEnd"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end" />
+                <TextView
+                    android:id="@+id/asunto"
+                    android:textSize="20dp"
+                    android:text="El alumno ingresó con tardanza de 10 minutos"
+                    android:textColor="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Responsable:"
+                    android:textSize="20dp"
+                    android:textColor="#992A52"
+                    android:textAlignment="viewEnd"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end" />
+                <TextView
+                    android:id="@+id/responsable"
+                    android:textSize="20dp"
+                    android:text="Supervisor 1"
+                    android:textColor="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_below="@id/bloque"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/wp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bordec2"
+                android:textColor="#ffffff"
+                android:text="Responder con WhatsApp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/mail"
+                android:layout_margin="10dp"
+                android:background="@drawable/bordec2"
+                android:textColor="#ffffff"
+                android:text="Responder usando correo electrónico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

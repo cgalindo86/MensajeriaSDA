@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ingenio.mensajeriasda.MainActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:layout_marginTop="50dp"
+            android:id="@+id/miWeb"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <RelativeLayout
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/izquierda"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/izquierda"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"/>
+                <!--<Button
+                    android:id="@+id/volver"
+                    android:text="VOLVER"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/bordec2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>-->
+
+            </LinearLayout>
+
+            <!--<Button
+                android:id="@+id/derecha"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/derecha"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />-->
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

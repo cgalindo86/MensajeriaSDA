@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#183f70</color>
+    <color name="colorPrimaryDark">#536fa3</color>
+    <color name="colorAccent">#536fa3</color>
+    <color name="colorAzul">#183f70</color>
+    <color name="colorAzulMedio">#3c598c</color>
+    <color name="colorAzulBajo">#536fa3</color>
+    <color name="colorRojo">#8f2a24</color>
+    <color name="tareas">#FA9B19</color>
+    <color name="materiales">#800040</color>
+    <color name="actividades">#1919FA</color>
+    <color name="evaluaciones">#FF0000</color>
+</resources>

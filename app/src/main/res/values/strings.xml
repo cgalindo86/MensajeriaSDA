@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SDA Instant Messaging</string>
+    <string name="channel_name">Canal</string>
+    <string name="channel_description">SDA</string>
+</resources>

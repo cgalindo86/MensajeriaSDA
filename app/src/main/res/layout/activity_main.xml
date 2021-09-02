@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/bienvenida"
+            android:text="BIENVENIDO(A)"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="20dp"
+
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/usuario"
+            android:layout_below="@id/bienvenida"
+            android:textStyle="bold|italic"
+            android:textColor="@color/colorRojo"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/mensajes"
+            android:layout_below="@id/usuario"
+            android:textColor="#ffffff"
+            android:background="@drawable/bordec2"
+            android:text="MENSAJES"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/calendario"
+            android:layout_below="@id/mensajes"
+            android:textColor="#ffffff"
+            android:background="@drawable/bordec2"
+            android:text="CALENDARIO"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/virtualroom"
+            android:layout_below="@id/calendario"
+            android:textColor="#ffffff"
+            android:background="@drawable/bordec2"
+            android:text="VIRTUAL ROOM"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ListView
+            android:id="@+id/milista"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/virtualroom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/cerrar"
+            android:layout_below="@id/milista"
+            android:textColor="#ffffff"
+            android:background="@drawable/bordec1"
+            android:text="CERRAR SESIÓN"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+
+</LinearLayout>
