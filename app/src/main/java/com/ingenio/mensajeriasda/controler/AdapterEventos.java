@@ -97,13 +97,16 @@ public class AdapterEventos extends BaseAdapter {
         RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.tipo);
         if(evento.getTipo().equals("1")){
             relativeLayout.setBackground(ContextCompat.getDrawable(activity, R.drawable.bordetareas));
+            btn.setVisibility(View.GONE);
         } else if(evento.getTipo().equals("2")){
             relativeLayout.setBackground(ContextCompat.getDrawable(activity, R.drawable.bordemateriales));
+            btn.setVisibility(View.GONE);
         } else if(evento.getTipo().equals("3")){
             relativeLayout.setBackground(ContextCompat.getDrawable(activity, R.drawable.bordeactividades));
             btn.setVisibility(View.GONE);
         } else if(evento.getTipo().equals("4")){
             relativeLayout.setBackground(ContextCompat.getDrawable(activity, R.drawable.bordeevaluaciones));
+            btn.setVisibility(View.GONE);
         } else if(evento.getTipo().equals("5")){
             relativeLayout.setBackground(ContextCompat.getDrawable(activity, R.drawable.bordeactividades));
             btn.setVisibility(View.VISIBLE);
