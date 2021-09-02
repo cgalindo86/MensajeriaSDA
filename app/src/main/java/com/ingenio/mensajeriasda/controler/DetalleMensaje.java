@@ -98,4 +98,10 @@ String info = mensajes.getSupervisor()+"%"+mensajes.getSupervisorMail()+"%"+mens
             }
         });
     }
+
+    @Override
+    public void onBackPressed (){
+        Intent i = new Intent(DetalleMensaje.this, MensajeManager.class);
+        startActivity(i);
+    }
 }

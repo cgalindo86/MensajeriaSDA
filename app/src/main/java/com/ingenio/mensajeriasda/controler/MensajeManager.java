@@ -131,4 +131,10 @@ public class MensajeManager extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed (){
+        Intent i = new Intent(MensajeManager.this, MainActivity.class);
+        startActivity(i);
+    }
+
 }
