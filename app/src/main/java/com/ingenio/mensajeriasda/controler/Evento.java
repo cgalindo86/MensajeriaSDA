@@ -8,14 +8,24 @@ public class Evento {
     String detalle;
     String hora;
     String nota;
+    String responsable;
 
-    public Evento(String fecha, String tipo, String curso, String detalle, String hora, String nota) {
+    public Evento(String fecha, String tipo, String curso, String detalle, String hora, String nota, String responsable) {
         this.fecha = fecha;
         this.tipo = tipo;
         this.curso = curso;
         this.detalle = detalle;
         this.hora = hora;
         this.nota = nota;
+        this.responsable = responsable;
+    }
+
+    public String getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(String responsable) {
+        this.responsable = responsable;
     }
 
     public String getNota() {

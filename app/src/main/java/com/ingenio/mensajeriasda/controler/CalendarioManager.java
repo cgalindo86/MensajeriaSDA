@@ -299,9 +299,13 @@ public class CalendarioManager extends AppCompatActivity {
 
 
             ListEvento.add(epoch3+"");
-            Log.e("color",matriz[1]);
+            Log.e("color0",matriz[0]);
+            Log.e("color1",matriz[1]);
             Log.e("color2",matriz[2]);
             Log.e("color3",matriz[3]);
+            Log.e("color4",matriz[4]);
+            Log.e("color5",matriz[5]);
+            Log.e("color6",matriz[6]);
             Event event = new Event(Color.parseColor(Colores(matriz[1])), epoch3, matriz[2]);
 
             compactCalendarView.addEvent(event);
@@ -379,8 +383,8 @@ public class CalendarioManager extends AppCompatActivity {
             String matriz[] = valu[i].split("_");
             if(fecha.equals(matriz[0])){
                 datos = datos + valu[i] + "#";
-                if(matriz.length>4){
-                    Evento evento = new Evento(matriz[0],matriz[1],matriz[2],matriz[3],matriz[4],matriz[5]);
+                if(matriz.length>5){
+                    Evento evento = new Evento(matriz[0],matriz[1],matriz[2],matriz[3],matriz[4],matriz[5],matriz[6]);
                     arrayList.add(evento);
                 }
 

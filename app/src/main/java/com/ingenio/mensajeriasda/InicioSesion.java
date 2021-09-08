@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ingenio.mensajeriasda.model.Alumno;
+import com.ingenio.mensajeriasda.model.Eventos;
 import com.ingenio.mensajeriasda.service.Conexion;
 
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class InicioSesion extends Activity { //implements GoogleApiClient.OnConn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inicio_sesion);
+
         btnSignIn = (Button)findViewById(R.id.sign_in_button2);
 
         txtNombre = (TextView)findViewById(R.id.txtNombre);
@@ -172,6 +174,25 @@ public class InicioSesion extends Activity { //implements GoogleApiClient.OnConn
 
         alumno.setAlumnos(alumnos,getApplicationContext());
         alumno.setAlumnosNombre(nombres,getApplicationContext());
+
+        Eventos eventos = new Eventos();
+
+        String d[] = alumno.getAlumnos(getApplicationContext()).split("_");
+        int i2=0;
+        for(i2=0; i2<d.length; i2++){
+            eventos.setDatosMes("","01",d[i2],getApplicationContext());
+            eventos.setDatosMes("","02",d[i2],getApplicationContext());
+            eventos.setDatosMes("","03",d[i2],getApplicationContext());
+            eventos.setDatosMes("","04",d[i2],getApplicationContext());
+            eventos.setDatosMes("","05",d[i2],getApplicationContext());
+            eventos.setDatosMes("","06",d[i2],getApplicationContext());
+            eventos.setDatosMes("","07",d[i2],getApplicationContext());
+            eventos.setDatosMes("","08",d[i2],getApplicationContext());
+            eventos.setDatosMes("","09",d[i2],getApplicationContext());
+            eventos.setDatosMes("","10",d[i2],getApplicationContext());
+            eventos.setDatosMes("","11",d[i2],getApplicationContext());
+            eventos.setDatosMes("","12",d[i2],getApplicationContext());
+        }
 
         return  true;
 

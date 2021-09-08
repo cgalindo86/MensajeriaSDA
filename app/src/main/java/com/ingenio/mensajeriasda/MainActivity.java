@@ -28,6 +28,8 @@ import com.ingenio.mensajeriasda.controler.CalendarioManager;
 import com.ingenio.mensajeriasda.controler.Mensaje;
 import com.ingenio.mensajeriasda.controler.MensajeManager;
 import com.ingenio.mensajeriasda.model.Alumno;
+import com.ingenio.mensajeriasda.model.Eventos;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -77,24 +79,36 @@ public class MainActivity extends AppCompatActivity {
         virtualroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i2 = new Intent(MainActivity.this, NavegadorSda.class);
-                startActivity(i2);*/
+
                 listView.setVisibility(View.VISIBLE);
                 Lista();
-                /*Alumno alumno = new Alumno();
-                String elegido = alumno.getAlumnoElegido(getApplicationContext());
-                String ruta = "http://sdavirtualroom.dyndns.org/sda/ingresoApp.php?mail="+elegido;
 
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse(ruta));
-                startActivity(intent);*/
             }
         });
 
         cerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Eventos eventos = new Eventos();
+
                 Alumno alumno = new Alumno();
+                String d[] = alumno.getAlumnos(getApplicationContext()).split("_");
+                int i2=0;
+                for(i2=0; i2<d.length; i2++){
+                    eventos.setDatosMes("","01",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","02",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","03",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","04",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","05",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","06",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","07",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","08",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","09",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","10",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","11",d[i2],getApplicationContext());
+                    eventos.setDatosMes("","12",d[i2],getApplicationContext());
+                }
+
                 alumno.setPPFFDni("",getApplicationContext());
                 alumno.setPPFF("",getApplicationContext());
                 alumno.setAlumnoElegido("",getApplicationContext());

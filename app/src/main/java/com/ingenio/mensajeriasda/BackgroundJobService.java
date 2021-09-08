@@ -50,6 +50,7 @@ public class BackgroundJobService extends JobService {
     public boolean onStartJob(final JobParameters params) {
         //Log.d(this.getClass().getSimpleName(),"onStartJob--");
         Log.e("BackgroundJobService","onStartJob--");
+
         createNotificationChannel();
 
         context = getApplicationContext();
@@ -68,7 +69,7 @@ public class BackgroundJobService extends JobService {
         socket.connect();
 
         Alumno mialumno = new Alumno();
-
+        Log.e("ppff - dni",mialumno.getPPFFDni(getApplicationContext()));
 
         socket.on("recibe info2 "+mialumno.getPPFFDni(getApplicationContext()), new Emitter.Listener() {
             @Override

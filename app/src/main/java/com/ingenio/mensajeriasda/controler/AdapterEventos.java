@@ -80,14 +80,14 @@ public class AdapterEventos extends BaseAdapter {
                 String nalumno = alumno.getAlumnoElegido(activity);
                 String nombre[] = alumno.getAlumnoData(nalumno,activity).split("&");
 
-                String mensajeria="Estimado CAMILO GALINDO"
+                String mensajeria="Estimado personal dominguino"
                         +". Soy apoderado de "+nombre[1]
                         +". Confirmo mi asistencia al evento:\n"+evento.getDetalle()
                         +"\n";
 
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("plain/text");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cgalindo@sda.edu.pe"});
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{evento.getResponsable()});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Confirmar asistencia a evento SDA");
                 intent.putExtra(Intent.EXTRA_TEXT, mensajeria);
                 activity.startActivity(Intent.createChooser(intent, "Confirmar asistencia a evento SDA"));
