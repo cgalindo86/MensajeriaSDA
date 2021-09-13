@@ -25,7 +25,7 @@
         <activity android:name=".controler.DetalleMensaje"></activity>
         <activity android:name=".controler.MensajeManager"></activity>
         <activity android:name=".controler.CalendarioManager"></activity>
-        <activity android:name=".controler.NavegadorSda" android:exported="false"></activity>
+
         <receiver android:name=".BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -43,4 +43,5 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 </manifest>
