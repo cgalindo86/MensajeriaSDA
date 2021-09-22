@@ -279,7 +279,7 @@ public class CalendarioManager extends AppCompatActivity {
     void EventosEnCalendario(String eventos){
 
         //String ev[] = {"12/10/2018 20:00:00","12/11/2018 20:00:00","12/12/2018 20:00:00","12/14/2018 20:00:00"};
-        String valu[] = eventos.split("#");
+        String valu[] = eventos.split("_#_");
         compactCalendarView.removeAllEvents();
 
         int val = valu.length;

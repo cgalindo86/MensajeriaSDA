@@ -28,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by cgali on 30/01/2018.
@@ -44,12 +46,16 @@ public class BackgroundJobService extends JobService {
     private Handler handler;
     Context context;
     com.github.nkzawa.socketio.client.Socket socket;
-
+    float time;
 
     @Override
     public boolean onStartJob(final JobParameters params) {
         //Log.d(this.getClass().getSimpleName(),"onStartJob--");
-        Log.e("BackgroundJobService","onStartJob--");
+        Log.e("BackgroundJobService 1","onStartJob--");
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        Log.e("formatedDate",formattedDate);
 
         createNotificationChannel();
 
@@ -257,7 +263,7 @@ public class BackgroundJobService extends JobService {
             }
         });
 
-        Log.e("BackgroundJobService 2","onStartJob--");
+        Log.e("BackgroundJobService 11","onStartJob--");
         BootReceiver.scheduleJob(getApplicationContext());
         return true;
     }
