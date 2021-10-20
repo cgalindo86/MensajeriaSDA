@@ -85,7 +85,10 @@ public class AdapterCalificaciones extends BaseAdapter {
             linearLayout.setBackgroundColor(Color.parseColor("#DAF1CC"));
         }
 
-        if(calificaciones.getNota().equals("A")){
+        if(calificaciones.getNota().equals("AD")){
+            t2.setTextColor(Color.parseColor("#335BF1"));
+            t2.setText(calificaciones.getNota());
+        } else if(calificaciones.getNota().equals("A")){
             t2.setTextColor(Color.parseColor("#335BF1"));
             t2.setText(calificaciones.getNota());
         } else if(calificaciones.getNota().equals("B")){
