@@ -288,7 +288,7 @@ public class CalificacionesManager extends AppCompatActivity {
         Log.e("ingreso lista",mensaje);
         final ArrayList<Calificaciones> arrayList = new ArrayList<Calificaciones>();
         final String d[] = mensaje.split("____");
-        if(mensaje!=""){
+        if(mensaje!="" && d.length>=1){
             int i;
             int n = d.length;
 
@@ -307,26 +307,29 @@ public class CalificacionesManager extends AppCompatActivity {
 
 
                 Log.e("competencia",e[0]);
-                String f[] = e[1].split("_");
-                int i2=0;
-                String ladata="";
-                for(i2=0; i2<f.length; i2++){
-                    String lad = f[i2];
-                    String data2[] = f[i2].split(": ");
-                    if(!ladata.equals(data2[0])){
-                        if(data2.length>1){
-                            Calificaciones calificaciones = new Calificaciones(data2[0],data2[1],"2");
-                            arrayList.add(calificaciones);
-                        } else {
-                            Calificaciones calificaciones = new Calificaciones(data2[0],"","2");
-                            arrayList.add(calificaciones);
+                //if(e.length>1){
+                    String f[] = e[1].split("_");
+                    int i2=0;
+                    String ladata="";
+                    for(i2=0; i2<f.length; i2++){
+                        String lad = f[i2];
+                        String data2[] = f[i2].split(": ");
+                        if(!ladata.equals(data2[0])){
+                            if(data2.length>1){
+                                Calificaciones calificaciones = new Calificaciones(data2[0],data2[1],"2");
+                                arrayList.add(calificaciones);
+                            } else {
+                                Calificaciones calificaciones = new Calificaciones(data2[0],"","2");
+                                arrayList.add(calificaciones);
+                            }
                         }
+                        ladata = data2[0];
+                        //Calificaciones calificaciones2 = new Calificaciones(data2[0],data2[1],"2");
+                        Log.e("capacidad",f[i2]);
+                        //arrayList.add(calificaciones2);
                     }
-                    ladata = data2[0];
-                    //Calificaciones calificaciones2 = new Calificaciones(data2[0],data2[1],"2");
-                    Log.e("capacidad",f[i2]);
-                    //arrayList.add(calificaciones2);
-                }
+                //}
+
             }
 
         }
