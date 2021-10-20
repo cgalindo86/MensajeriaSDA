@@ -25,6 +25,8 @@
         <activity android:name=".controler.DetalleMensaje"></activity>
         <activity android:name=".controler.MensajeManager"></activity>
         <activity android:name=".controler.CalendarioManager"></activity>
+        <activity android:name=".controler.CalificacionesManager"></activity>
+        <activity android:name=".controler.PagosManager"></activity>
 
         <receiver android:name=".BootReceiver">
             <intent-filter>

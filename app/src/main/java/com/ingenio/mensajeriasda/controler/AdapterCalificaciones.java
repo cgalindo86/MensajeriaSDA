@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -37,12 +38,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterAlumnos extends BaseAdapter {
+public class AdapterCalificaciones extends BaseAdapter {
 
     protected Activity activity;
-    protected ArrayList<Alumnos> items;
+    protected ArrayList<Calificaciones> items;
 
-    public AdapterAlumnos(Activity activity, ArrayList arrayList) {
+    public AdapterCalificaciones(Activity activity, ArrayList arrayList) {
         this.activity = activity;
         this.items = arrayList;
     }
@@ -67,28 +68,48 @@ public class AdapterAlumnos extends BaseAdapter {
         View v = convertView;
         if (convertView==null){
             LayoutInflater ly = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = ly.inflate(R.layout.itemspinner2,null);
+            v = ly.inflate(R.layout.item_calificaciones,null);
         }
 
-        final Alumnos alumnos = items.get(position);
+        final Calificaciones calificaciones = items.get(position);
 
-        TextView t = (TextView) v.findViewById(android.R.id.text1);
-        t.setText(alumnos.getNombre());
-        t.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        TextView t = (TextView) v.findViewById(R.id.miembro);
+        t.setText(calificaciones.getItem());
 
-                String elegido = alumnos.getDni();
-                String ruta = "http://sdavirtualroom.dyndns.org/sda/ingresoApp.php?mail="+elegido;
+        TextView t2 = (TextView) v.findViewById(R.id.nota);
+        t2.setText(calificaciones.getNota());
 
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse(ruta));
-                activity.startActivity(intent);
+        LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.califica);
+        if(calificaciones.getTipo().equals("1")){
+            linearLayout.setBackgroundColor(Color.parseColor("#F2C9A4"));
+        } else {
+            linearLayout.setBackgroundColor(Color.parseColor("#DAF1CC"));
+        }
 
+        if(calificaciones.getNota().equals("A")){
+            t2.setTextColor(Color.parseColor("#335BF1"));
+        } else if(calificaciones.getNota().equals("B")){
+            t2.setTextColor(Color.parseColor("#335BF1"));
+        } else if(calificaciones.getNota().equals("C")){
+            t2.setTextColor(Color.parseColor("#F13333"));
+        } else if(calificaciones.getNota().equals("")){
+
+        } else {
+            int lanota = Integer.parseInt(calificaciones.getNota());
+            if(lanota>11){
+                t2.setTextColor(Color.parseColor("#335BF1"));
+            } else {
+                t2.setTextColor(Color.parseColor("#F13333"));
             }
-        });
+        }
+
 
         return v;
+    }
+
+    public static boolean esMayuscula(String s) {
+        // Regresa el resultado de comparar la original con su versión mayúscula
+        return s.equals(s.toUpperCase());
     }
 
 }

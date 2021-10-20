@@ -30,8 +30,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <Button
-            android:id="@+id/mensajes"
+            android:id="@+id/calendario"
             android:layout_below="@id/usuario"
+            android:textColor="#ffffff"
+            android:background="@drawable/bordec2"
+            android:text="CALENDARIO"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/calificaciones"
+            android:layout_below="@id/calendario"
+            android:textColor="#ffffff"
+            android:background="@drawable/bordec2"
+            android:text="CALIFICACIONES"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/mensajes"
+            android:layout_below="@id/calificaciones"
             android:textColor="#ffffff"
             android:background="@drawable/bordec2"
             android:text="MENSAJES"
@@ -40,23 +58,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <Button
-            android:id="@+id/calendario"
+            android:id="@+id/pagos"
             android:layout_below="@id/mensajes"
             android:textColor="#ffffff"
             android:background="@drawable/bordec2"
-            android:text="CALENDARIO"
+            android:text="PAGOS"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/virtualroom"
-            android:layout_below="@id/calendario"
-            android:textColor="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pagos"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/bordec2"
             android:text="VIRTUAL ROOM"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textColor="#ffffff" />
         <ListView
             android:id="@+id/milista"
             android:layout_centerInParent="true"

@@ -25,8 +25,10 @@ import com.ingenio.mensajeriasda.controler.AdapterAlumnos;
 import com.ingenio.mensajeriasda.controler.AdapterMensajes;
 import com.ingenio.mensajeriasda.controler.Alumnos;
 import com.ingenio.mensajeriasda.controler.CalendarioManager;
+import com.ingenio.mensajeriasda.controler.CalificacionesManager;
 import com.ingenio.mensajeriasda.controler.Mensaje;
 import com.ingenio.mensajeriasda.controler.MensajeManager;
+import com.ingenio.mensajeriasda.controler.PagosManager;
 import com.ingenio.mensajeriasda.model.Alumno;
 import com.ingenio.mensajeriasda.model.Eventos;
 
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "com.ingenio.mensajeriasda";
     TextView txt;
-    Button mensajes,calendario,virtualroom,cerrar;
+    Button mensajes,calendario,calificaciones,pagos,virtualroom,cerrar;
     ListView listView;
 
     @SuppressLint("WrongConstant")
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         mensajes = (Button) findViewById(R.id.mensajes);
         calendario = (Button) findViewById(R.id.calendario);
+        calificaciones = (Button) findViewById(R.id.calificaciones);
+        pagos = (Button) findViewById(R.id.pagos);
         virtualroom = (Button) findViewById(R.id.virtualroom);
         cerrar = (Button) findViewById(R.id.cerrar);
         listView = (ListView) findViewById(R.id.milista);
@@ -72,6 +76,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i2 = new Intent(MainActivity.this, CalendarioManager.class);
+                startActivity(i2);
+            }
+        });
+
+        calificaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i2 = new Intent(MainActivity.this, CalificacionesManager.class);
+                startActivity(i2);
+            }
+        });
+
+        pagos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i2 = new Intent(MainActivity.this, PagosManager.class);
                 startActivity(i2);
             }
         });
