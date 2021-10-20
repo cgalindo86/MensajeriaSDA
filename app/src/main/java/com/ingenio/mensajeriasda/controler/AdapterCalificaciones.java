@@ -77,7 +77,6 @@ public class AdapterCalificaciones extends BaseAdapter {
         t.setText(calificaciones.getItem());
 
         TextView t2 = (TextView) v.findViewById(R.id.nota);
-        t2.setText(calificaciones.getNota());
 
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.califica);
         if(calificaciones.getTipo().equals("1")){
@@ -88,10 +87,13 @@ public class AdapterCalificaciones extends BaseAdapter {
 
         if(calificaciones.getNota().equals("A")){
             t2.setTextColor(Color.parseColor("#335BF1"));
+            t2.setText(calificaciones.getNota());
         } else if(calificaciones.getNota().equals("B")){
             t2.setTextColor(Color.parseColor("#335BF1"));
+            t2.setText(calificaciones.getNota());
         } else if(calificaciones.getNota().equals("C")){
             t2.setTextColor(Color.parseColor("#F13333"));
+            t2.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
         } else if(calificaciones.getNota().equals("")){
 
         } else {
