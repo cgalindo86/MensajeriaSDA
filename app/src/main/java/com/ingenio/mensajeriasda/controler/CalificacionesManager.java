@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -298,6 +299,10 @@ public class CalificacionesManager extends AppCompatActivity {
                 Log.e("ii2",e[0]);
                 String data[] = e[0].split(": ");
                 if(data.length>1){
+                    if(data[1].equals("C")){
+                        TextView txt = (TextView) findViewById(R.id.notaC);
+                        txt.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
+                    }
                     Calificaciones calificaciones = new Calificaciones(data[0],data[1],"1");
                     arrayList.add(calificaciones);
                 } else {

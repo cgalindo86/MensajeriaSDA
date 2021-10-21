@@ -96,9 +96,10 @@ public class AdapterCalificaciones extends BaseAdapter {
             t2.setText(calificaciones.getNota());
         } else if(calificaciones.getNota().equals("C")){
             t2.setTextColor(Color.parseColor("#F13333"));
-            t2.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
+            t2.setText("C * ");
+            //t2.setText();
         } else if(calificaciones.getNota().equals("")){
-
+            t2.setText(" ");
         } else {
             int lanota = Integer.parseInt(calificaciones.getNota());
             if(lanota>11){
