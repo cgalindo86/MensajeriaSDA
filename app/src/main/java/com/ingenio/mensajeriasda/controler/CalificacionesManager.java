@@ -286,6 +286,8 @@ public class CalificacionesManager extends AppCompatActivity {
 
     private void Lista2(String mensaje){
         final ListView lista = (ListView) findViewById(R.id.milista0);
+        final TextView txt = (TextView) findViewById(R.id.notaC);
+        txt.setText(" ");
         Log.e("ingreso lista",mensaje);
         final ArrayList<Calificaciones> arrayList = new ArrayList<Calificaciones>();
         final String d[] = mensaje.split("____");
@@ -300,12 +302,13 @@ public class CalificacionesManager extends AppCompatActivity {
                 String data[] = e[0].split(": ");
                 if(data.length>1){
                     if(data[1].equals("C")){
-                        TextView txt = (TextView) findViewById(R.id.notaC);
+                        Log.e("la C 1",data[1]);
                         txt.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
                     }
                     Calificaciones calificaciones = new Calificaciones(data[0],data[1],"1");
                     arrayList.add(calificaciones);
                 } else {
+
                     Calificaciones calificaciones = new Calificaciones(data[0],"","1");
                     arrayList.add(calificaciones);
                 }
@@ -321,6 +324,10 @@ public class CalificacionesManager extends AppCompatActivity {
                         String data2[] = f[i2].split(": ");
                         if(!ladata.equals(data2[0])){
                             if(data2.length>1){
+                                if(data2[1].equals("C")){
+                                    Log.e("la C 2",data[1]);
+                                    txt.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
+                                }
                                 Calificaciones calificaciones = new Calificaciones(data2[0],data2[1],"2");
                                 arrayList.add(calificaciones);
                             } else {
