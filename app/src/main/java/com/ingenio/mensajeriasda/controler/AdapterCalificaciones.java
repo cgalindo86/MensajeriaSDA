@@ -79,11 +79,12 @@ public class AdapterCalificaciones extends BaseAdapter {
         TextView t2 = (TextView) v.findViewById(R.id.nota);
 
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.califica);
-        if(calificaciones.getTipo().equals("1")){
+        linearLayout.setBackgroundColor(Color.parseColor("#"+calificaciones.getTipo()));
+        /*if(calificaciones.getTipo().equals("1")){
             linearLayout.setBackgroundColor(Color.parseColor("#F2C9A4"));
         } else {
             linearLayout.setBackgroundColor(Color.parseColor("#DAF1CC"));
-        }
+        }*/
 
         if(calificaciones.getNota().equals("AD")){
             t2.setTextColor(Color.parseColor("#335BF1"));
@@ -96,7 +97,7 @@ public class AdapterCalificaciones extends BaseAdapter {
             t2.setText(calificaciones.getNota());
         } else if(calificaciones.getNota().equals("C")){
             t2.setTextColor(Color.parseColor("#F13333"));
-            t2.setText("C * ");
+            t2.setText("*");
             //t2.setText();
         } else if(calificaciones.getNota().equals("")){
             t2.setText(" ");

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "com.ingenio.mensajeriasda";
     TextView txt;
-    Button mensajes,calendario,calificaciones,pagos,virtualroom,cerrar;
+    Button mensajes,calendario,calificaciones,pagos,virtualroom,cerrar,atencion;
     ListView listView;
 
     @SuppressLint("WrongConstant")
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         BootReceiver bootReceiver = new BootReceiver();
         bootReceiver.onReceive(getApplicationContext(),i2);
 
+        atencion = (Button) findViewById(R.id.atencion);
         mensajes = (Button) findViewById(R.id.mensajes);
         calendario = (Button) findViewById(R.id.calendario);
         calificaciones = (Button) findViewById(R.id.calificaciones);
@@ -63,6 +64,26 @@ public class MainActivity extends AppCompatActivity {
         cerrar = (Button) findViewById(R.id.cerrar);
         listView = (ListView) findViewById(R.id.milista);
         listView.setVisibility(View.GONE);
+
+        atencion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Alumno alumno = new Alumno();
+                String nalumno = alumno.getAlumnoElegido(getApplicationContext());
+                String nombre[] = alumno.getAlumnoData(nalumno,getApplicationContext()).split("&");
+
+                String mensajeria="Estimado personal dominguino"
+                        +". Soy apoderado de "+nombre[1]
+                        +". Tengo la siguiente consulta:\n";
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("plain/text");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"atencionalcliente@sda.edu.pe"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Consulta");
+                intent.putExtra(Intent.EXTRA_TEXT, mensajeria);
+                startActivity(Intent.createChooser(intent, "Consulta"));
+            }
+        });
 
         mensajes.setOnClickListener(new View.OnClickListener() {
             @Override

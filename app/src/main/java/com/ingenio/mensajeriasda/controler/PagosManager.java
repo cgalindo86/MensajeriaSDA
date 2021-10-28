@@ -3,6 +3,7 @@ package com.ingenio.mensajeriasda.controler;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -37,11 +39,12 @@ public class PagosManager extends AppCompatActivity {
     ImageView atras;
     String elegido="";
     String ruta="";
+    Button boton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mensaje_manager);
+        setContentView(R.layout.pagos_manager);
         //Toast.makeText(getApplicationContext(),isConnected+"01",Toast.LENGTH_LONG).show();
         final MensajeModel mensajeModel = new MensajeModel();
 
@@ -68,6 +71,18 @@ public class PagosManager extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent)
             {
                 //elegido = valores2[0];
+            }
+        });
+
+        boton = (Button) findViewById(R.id.comopagar);
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String ruta = "http://sdavirtualroom.dyndns.org/sda/controler/files/flayer.jpeg";
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse(ruta));
+                startActivity(intent);
             }
         });
 

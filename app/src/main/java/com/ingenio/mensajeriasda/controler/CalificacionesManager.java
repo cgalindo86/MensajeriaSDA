@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class CalificacionesManager extends AppCompatActivity {
 
-    ImageView atras;
+    ImageView atras,atras1;
     String elegido="", bimestre="1", curso="", grado="";
     String ruta="";
     LinearLayout linearLayout;
@@ -52,10 +52,13 @@ public class CalificacionesManager extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.calificaciones);
         linearLayout.setVisibility(View.GONE);
 
-        boton = (Button) findViewById(R.id.ocultar);
-        boton.setOnClickListener(new View.OnClickListener() {
+        //boton = (Button) findViewById(R.id.ocultar);
+        atras = (ImageView) findViewById(R.id.atras);
+        atras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TextView txt = (TextView) findViewById(R.id.nombreCurso);
+                txt.setText(" ");
                 linearLayout.setVisibility(View.GONE);
             }
         });
@@ -91,8 +94,8 @@ public class CalificacionesManager extends AppCompatActivity {
         });
 
         Spinner spinner0 = (Spinner) findViewById(R.id.spinner0);
-        String bimestres[] = {"1er Bimestre","2do Bimestre","3er Bimestre","4to Bimestre"};
-        final String bimestres2[] = {"1","2","3","4"};
+        String bimestres[] = {"3er Bimestre","4to Bimestre"};
+        final String bimestres2[] = {"3","4"};
         spinner0.setAdapter(new ArrayAdapter<String>(this, R.layout.itemspinner, bimestres));
         spinner0.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -118,8 +121,8 @@ public class CalificacionesManager extends AppCompatActivity {
             }
         });
 
-        atras = (ImageView) findViewById(R.id.atras);
-        atras.setOnClickListener(new View.OnClickListener() {
+        atras1 = (ImageView) findViewById(R.id.atras1);
+        atras1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i2 = new Intent(CalificacionesManager.this,MainActivity.class);
@@ -269,6 +272,8 @@ public class CalificacionesManager extends AppCompatActivity {
                 Log.e("Click", "click en el elemento " + position + " de mi ListView");
                 Log.e("click2",d[position] +"");
                 String e[] = d[position].split("%");
+                TextView txt = (TextView) findViewById(R.id.nombreCurso);
+                txt.setText(e[0]);
                 curso = e[1];
                 //curso = curso.replace(" ","%20");
                 linearLayout.setVisibility(View.VISIBLE);
@@ -290,57 +295,25 @@ public class CalificacionesManager extends AppCompatActivity {
         txt.setText(" ");
         Log.e("ingreso lista",mensaje);
         final ArrayList<Calificaciones> arrayList = new ArrayList<Calificaciones>();
-        final String d[] = mensaje.split("____");
+        final String d[] = mensaje.split("__");
         if(mensaje!="" && d.length>=1){
             int i;
             int n = d.length;
 
             for(i=0; i<n; i++){
                 Log.e("ii",d[i]);
-                String e[] = d[i].split("___");
+                String e[] = d[i].split(": ");
                 Log.e("ii2",e[0]);
-                String data[] = e[0].split(": ");
-                if(data.length>1){
-                    if(data[1].equals("C")){
-                        Log.e("la C 1",data[1]);
+                //String data[] = e[0].split(": ");
+                if(e.length>1){
+                    if(e[1].equals("C")){
+                        Log.e("la C 1",e[1]);
                         txt.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
                     }
-                    Calificaciones calificaciones = new Calificaciones(data[0],data[1],"1");
-                    arrayList.add(calificaciones);
-                } else {
-
-                    Calificaciones calificaciones = new Calificaciones(data[0],"","1");
+                    Calificaciones calificaciones = new Calificaciones(e[0],e[1],e[2]);
                     arrayList.add(calificaciones);
                 }
 
-
-                Log.e("competencia",e[0]);
-                //if(e.length>1){
-                    String f[] = e[1].split("_");
-                    int i2=0;
-                    String ladata="";
-                    for(i2=0; i2<f.length; i2++){
-                        String lad = f[i2];
-                        String data2[] = f[i2].split(": ");
-                        if(!ladata.equals(data2[0])){
-                            if(data2.length>1){
-                                if(data2[1].equals("C")){
-                                    Log.e("la C 2",data[1]);
-                                    txt.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
-                                }
-                                Calificaciones calificaciones = new Calificaciones(data2[0],data2[1],"2");
-                                arrayList.add(calificaciones);
-                            } else {
-                                Calificaciones calificaciones = new Calificaciones(data2[0],"","2");
-                                arrayList.add(calificaciones);
-                            }
-                        }
-                        ladata = data2[0];
-                        //Calificaciones calificaciones2 = new Calificaciones(data2[0],data2[1],"2");
-                        Log.e("capacidad",f[i2]);
-                        //arrayList.add(calificaciones2);
-                    }
-                //}
 
             }
 

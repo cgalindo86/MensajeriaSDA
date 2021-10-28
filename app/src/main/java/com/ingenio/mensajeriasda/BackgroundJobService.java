@@ -121,7 +121,7 @@ public class BackgroundJobService extends JobService {
                         String mensajeria = supervisor+"%"+supervisorMail+"%"+supervisorCelular+"%"+
                                 id_ppff+"%"+alumno+"%"+alumnoNombre+"%"+fecha+"%"+hora+"%"+asunto+"%"+curso+"%#";
 
-                        mialumno.setAlumnoElegido(alumno,getApplicationContext());
+                        //mialumno.setAlumnoElegido(alumno,getApplicationContext());
 
                         MensajeModel mensajeModel = new MensajeModel();
                         mensajeModel.setMensajeElegido(mensajeria,getApplicationContext());
@@ -214,7 +214,7 @@ public class BackgroundJobService extends JobService {
                         String mensajeria = supervisor+"%"+supervisorMail+"%"+supervisorCelular+"%"+
                                 id_ppff+"%"+alumno+"%"+alumnoNombre+"%"+fecha+"%"+hora+"%"+asunto+"%"+curso+"%#";
 
-                        mialumno.setAlumnoElegido(alumno,getApplicationContext());
+                        //mialumno.setAlumnoElegido(alumno,getApplicationContext());
 
                         MensajeModel mensajeModel = new MensajeModel();
                         mensajeModel.setMensajeElegido(mensajeria,getApplicationContext());
