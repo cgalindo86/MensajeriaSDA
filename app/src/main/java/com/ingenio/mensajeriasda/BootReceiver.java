@@ -42,7 +42,7 @@ public class BootReceiver extends BroadcastReceiver {
         }*/
         Log.e("BootReceiver","boot receiver");
 
-        Calendar calendar2 = Calendar.getInstance();
+        /*Calendar calendar2 = Calendar.getInstance();
         calendar2.setTimeInMillis(System.currentTimeMillis());
         calendar2.set(Calendar.HOUR_OF_DAY,18);
         calendar2.set(Calendar.MINUTE,58);
@@ -54,7 +54,7 @@ public class BootReceiver extends BroadcastReceiver {
         calendar3.setTimeInMillis(System.currentTimeMillis());
         calendar3.set(Calendar.HOUR_OF_DAY,11);
         calendar3.set(Calendar.MINUTE,17);
-        calendar3.set(Calendar.SECOND, 0);
+        calendar3.set(Calendar.SECOND, 0);*/
 
         //setAlarm2(1,calendar3.getTimeInMillis(),context);
 

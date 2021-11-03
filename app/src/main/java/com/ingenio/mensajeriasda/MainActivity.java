@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     },
                     100);
 
-            Calendar calendar = Calendar.getInstance();
+            /*Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.HOUR_OF_DAY,18);
             calendar.set(Calendar.MINUTE,59);
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            /*calendar3.set(Calendar.HOUR_OF_DAY,16);
+            calendar3.set(Calendar.HOUR_OF_DAY,16);
             calendar3.set(Calendar.MINUTE,48);
             calendar3.set(Calendar.SECOND, 0);
 
