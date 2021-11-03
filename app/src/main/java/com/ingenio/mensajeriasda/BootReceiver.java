@@ -1,5 +1,7 @@
 package com.ingenio.mensajeriasda;
 
+import static android.content.Context.ALARM_SERVICE;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -8,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
@@ -22,9 +25,9 @@ import java.util.Calendar;
 
 public class BootReceiver extends BroadcastReceiver {
 
-    private static final int PERIOD_MS = 30000;
+    private static final int PERIOD_MS = 60000;
     private AlarmManager alarmManager;
-    private PendingIntent alarmIntent;
+    private PendingIntent pendingIntent;
     int requestId=1;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -38,23 +41,22 @@ public class BootReceiver extends BroadcastReceiver {
             scheduleJob(context);
         }*/
         Log.e("BootReceiver","boot receiver");
-        alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(context,requestId,intent,
-                PendingIntent.FLAG_NO_CREATE);
-        alarmIntent = PendingIntent.getBroadcast(context,0,intent,0);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+
-                60*1000,alarmIntent);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY,12);
-        calendar.set(Calendar.MINUTE,5);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
-                1000*60*30,alarmIntent);
 
-        calendar.set(Calendar.HOUR_OF_DAY,14);
-        calendar.set(Calendar.MINUTE,1);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
-                1000*60*30,alarmIntent);
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTimeInMillis(System.currentTimeMillis());
+        calendar2.set(Calendar.HOUR_OF_DAY,18);
+        calendar2.set(Calendar.MINUTE,58);
+        calendar2.set(Calendar.SECOND,30);
+
+        setAlarm(1,calendar2.getTimeInMillis(),context);
+
+        Calendar calendar3 = Calendar.getInstance();
+        calendar3.setTimeInMillis(System.currentTimeMillis());
+        calendar3.set(Calendar.HOUR_OF_DAY,11);
+        calendar3.set(Calendar.MINUTE,17);
+        calendar3.set(Calendar.SECOND, 0);
+
+        //setAlarm2(1,calendar3.getTimeInMillis(),context);
 
         ComponentName serviceComponent = new ComponentName(context, BackgroundJobService.class);
         JobInfo.Builder builder = null;
@@ -82,5 +84,24 @@ public class BootReceiver extends BroadcastReceiver {
 
     }
 
+    public static void setAlarm(int i, Long timestamp, Context ctx) {
+        AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(ctx, AlarmReceiver2.class);
+        PendingIntent pendingIntent;
+        pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+        alarmIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
+        alarmManager.set(AlarmManager.RTC, timestamp,pendingIntent);
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 60*1000, pendingIntent);
+    }
+
+    public static void setAlarm2(int i, Long timestamp, Context ctx) {
+        AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(ctx, AlarmReceiver.class);
+        PendingIntent pendingIntent;
+        pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+        alarmIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
+        alarmManager.setRepeating(AlarmManager.RTC, timestamp, 60*1000,pendingIntent);
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 60*1000, pendingIntent);
+    }
 
 }

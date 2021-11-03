@@ -1,13 +1,16 @@
 package com.ingenio.mensajeriasda.controler;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ingenio.mensajeriasda.MainActivity;
 import com.ingenio.mensajeriasda.R;
@@ -60,20 +63,58 @@ String info = mensajes.getSupervisor()+"%"+mensajes.getSupervisorMail()+"%"+mens
             @Override
             public void onClick(View v) {
 
-                MensajeModel mensajeModel = new MensajeModel();
-                String info = mensajeModel.getMensajeElegido(getApplicationContext());
-                String info2[] = info.split("%");
+                if(estaInstaladaAplicacion("com.whatsapp", getApplicationContext())){
+                    MensajeModel mensajeModel = new MensajeModel();
+                    String info = mensajeModel.getMensajeElegido(getApplicationContext());
+                    String info2[] = info.split("%");
 
-                String mensajeria="https://api.whatsapp.com/send?phone=51"+info2[2]
-                        +"&text=Estimado%20"+info2[0].replace(" ","%20")
-                        +"%20Soy%20apoderado%20de%20"+info2[5].replace(" ","%20")
-                        +".%20He%20recibido%20el%20siguiente%20mensaje%20:%0A"+info2[8].replace(" ","%20")
-                        +"%0AAl%20respecto%20le%20comunico%20que%20";
+                    String mensajeria="https://api.whatsapp.com/send?phone=51"+info2[2]
+                            +"&text=Estimado%20"+info2[0].replace(" ","%20")
+                            +"%20Soy%20apoderado%20de%20"+info2[5].replace(" ","%20")
+                            +".%20He%20recibido%20el%20siguiente%20mensaje%20:%0A"+info2[8].replace(" ","%20")
+                            +"%0AAl%20respecto%20le%20comunico%20que%20";
 
-                Uri uri = Uri.parse(mensajeria);
-                Intent i = new Intent(Intent.ACTION_VIEW, uri);
-                i.setPackage("com.whatsapp");
-                startActivity(i);
+                    Uri uri = Uri.parse(mensajeria);
+                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                    i.setPackage("com.whatsapp");
+                    startActivity(i);
+                } else if(estaInstaladaAplicacion("com.whatsapp.w4b", getApplicationContext())){
+                    MensajeModel mensajeModel = new MensajeModel();
+                    String info = mensajeModel.getMensajeElegido(getApplicationContext());
+                    String info2[] = info.split("%");
+
+                    String mensajeria="https://api.whatsapp.com/send?phone=51"+info2[2]
+                            +"&text=Estimado%20"+info2[0].replace(" ","%20")
+                            +"%20Soy%20apoderado%20de%20"+info2[5].replace(" ","%20")
+                            +".%20He%20recibido%20el%20siguiente%20mensaje%20:%0A"+info2[8].replace(" ","%20")
+                            +"%0AAl%20respecto%20le%20comunico%20que%20";
+
+                    Uri uri = Uri.parse(mensajeria);
+                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                    i.setPackage("com.whatsapp.w4b");
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(),"Usted no tiene instaladada la app WhatsApp",Toast.LENGTH_LONG).show();
+                    /*MensajeModel mensajeModel = new MensajeModel();
+                    String info = mensajeModel.getMensajeElegido(getApplicationContext());
+                    String info2[] = info.split("%");
+
+                    String mensajeria="Estimado "+info2[0]
+                            +". Soy apoderado de "+info2[5]
+                            +". He recibido el siguiente mensaje:\n"+info2[8]
+                            +"\nAl respecto le comunico que: ";
+
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("plain/text");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{info2[1]});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Respuesta Instant Messaging");
+                    intent.putExtra(Intent.EXTRA_TEXT, mensajeria);
+                    startActivity(Intent.createChooser(intent, "Respuesta Instant Messaging"));
+                    */
+
+                }
+
+
             }
         });
 
@@ -97,6 +138,17 @@ String info = mensajes.getSupervisor()+"%"+mensajes.getSupervisorMail()+"%"+mens
                 startActivity(Intent.createChooser(intent, "Respuesta Instant Messaging"));
             }
         });
+    }
+
+    private boolean estaInstaladaAplicacion(String nombrePaquete, Context context) {
+
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getPackageInfo(nombrePaquete, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
     @Override

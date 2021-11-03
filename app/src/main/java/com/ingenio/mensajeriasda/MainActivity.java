@@ -2,6 +2,8 @@ package com.ingenio.mensajeriasda;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -34,6 +36,7 @@ import com.ingenio.mensajeriasda.model.Eventos;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -196,6 +199,23 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     },
                     100);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY,18);
+            calendar.set(Calendar.MINUTE,59);
+            calendar.set(Calendar.SECOND, 0);
+
+            //Utils utils = new Utils();
+            setAlarm(1,calendar.getTimeInMillis(),getApplicationContext());
+
+
+
+            /*calendar3.set(Calendar.HOUR_OF_DAY,16);
+            calendar3.set(Calendar.MINUTE,48);
+            calendar3.set(Calendar.SECOND, 0);
+
+            setAlarm2(1,calendar3.getTimeInMillis(),getApplicationContext());*/
         }
 
     }
@@ -225,6 +245,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static void setAlarm(int i, Long timestamp, Context ctx) {
+        AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(ctx, AlarmReceiver.class);
+        PendingIntent pendingIntent;
+        pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+        alarmIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timestamp, 60*1000,pendingIntent);
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 60*1000, pendingIntent);
+    }
+
+    public static void setAlarm2(int i, Long timestamp, Context ctx) {
+        AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(ctx, AlarmReceiver.class);
+        PendingIntent pendingIntent;
+        pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+        alarmIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
+        alarmManager.setRepeating(AlarmManager.RTC, timestamp, 60*1000,pendingIntent);
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 60*1000, pendingIntent);
     }
 
 }
