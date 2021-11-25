@@ -4,10 +4,13 @@ import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
@@ -19,16 +22,25 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
+import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.ingenio.mensajeriasda.controler.CalendarioManager;
 import com.ingenio.mensajeriasda.controler.DetalleMensaje;
 import com.ingenio.mensajeriasda.controler.MensajeManager;
 import com.ingenio.mensajeriasda.model.Alumno;
+import com.ingenio.mensajeriasda.model.Eventos;
 import com.ingenio.mensajeriasda.model.MensajeModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -47,19 +59,54 @@ public class BackgroundJobService extends JobService {
     Context context;
     com.github.nkzawa.socketio.client.Socket socket;
     float time;
+    String[] fechas= new String[]{
+            "2021-11-06","2021-11-07","2021-11-13","2021-11-14",
+            "2021-11-20","2021-11-21","2021-11-27","2021-11-28",
+            "2021-12-04","2021-12-05","2021-12-11","2021-12-12",
+            "2021-12-08"
+    };
+
+    String[] horas= new String[]{
+            "07:31","13:31"
+    };
+
+    String[] tareas = new String[]{};
+
+    String ruta="";
 
     @Override
     public boolean onStartJob(final JobParameters params) {
         //Log.d(this.getClass().getSimpleName(),"onStartJob--");
         Log.e("BackgroundJobService 1","onStartJob--");
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c.getTime());
         Log.e("formatedDate",formattedDate);
+
+        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
+        String formattedDate2 = df2.format(c.getTime());
+        Log.e("formatedDate",formattedDate2);
+
+        Log.e("eee",!Comparar(formattedDate,fechas)+"");
+
 
         createNotificationChannel();
 
         context = getApplicationContext();
+
+        if(Comparar(formattedDate2,horas)){
+
+            Alumno alumno = new Alumno();
+            Log.e("ver",alumno.getAlumnos(getApplicationContext()));
+            String als[] = alumno.getAlumnos(getApplicationContext()).split("_");
+            int i;
+            for(i=0; i<=als.length-1; i++){
+                String dni = als[i];
+                BuscarEventos(dni,formattedDate);
+            }
+
+
+        }
 
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
@@ -132,7 +179,9 @@ public class BackgroundJobService extends JobService {
 
                         if(mial.contains(alumno)
                                 && id_ppff.equals(mialumno.getPPFFDni(getApplicationContext()))
-                                && !mensajeria2.equals(mensajeria)){
+                                && !mensajeria2.equals(mensajeria)
+                                && !Comparar(formattedDate,fechas)
+                        ){
                             Log.e("contenido",mial);
                             mensajeria2 = mensajeria;
                             //String mensajeria = supervisor+"%"+supervisorMail+"%"+supervisorCelular+"%"+
@@ -225,7 +274,9 @@ public class BackgroundJobService extends JobService {
 
                         if(mial.contains(alumno)
                                 && id_ppff.equals(mialumno.getPPFFDni(getApplicationContext()))
-                                && !mensajeria2.equals(mensajeria)){
+                                && !mensajeria2.equals(mensajeria)
+                                && !Comparar(formattedDate,fechas)
+                        ){
                             Log.e("contenido",mial);
                             mensajeria2 = mensajeria;
                             //String mensajeria = supervisor+"%"+supervisorMail+"%"+supervisorCelular+"%"+
@@ -268,7 +319,140 @@ public class BackgroundJobService extends JobService {
         return true;
     }
 
+    private void BuscarEventos(String dalumno,String dia){
+        Alumno alumno = new Alumno();
+        String dalumno1[] = alumno.getAlumnoData(dalumno,getApplicationContext()).split("&");
+        String nombre = dalumno1[1];
+        String grado = dalumno1[2];
+        String seccion = dalumno1[3];
+        String nivel="";
+        if(grado.contains("I")){
+            nivel = "I";
+        } else if(grado.contains("P")){
+            nivel = "P";
+        } else {
+            nivel = "S";
+        }
 
+        String[] dd = dia.split("-");
+
+        ruta = "http://sdavirtualroom.dyndns.org/sda/controler/consultaAlumno.php?accionget=5&alumnoget="+dalumno
+                +"&gradoget="+grado+"&seccionget="+seccion+"&nivelget="+nivel+"&anioget="+dd[0]
+                +"&mesget="+dd[1]+"&diaget="+dd[2];
+
+        LeeDatos leeDatos = new LeeDatos();
+        leeDatos.execute(ruta);
+    }
+
+    public class LeeDatos extends AsyncTask<String,Void,String> {
+
+        ProgressDialog progressDoalog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            String dni = params[0];
+            Log.e("ruta",dni);
+
+            String ladata = getDatos(dni);
+            return ladata;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            //Eventos eventos = new Eventos();
+            //eventos.setDatosMes(result,mesActual,elegido,getApplicationContext());
+            Log.e("resultadoLeeDatos", result);
+            EventosEnCalendario(result);
+
+        }
+
+    }
+
+    void EventosEnCalendario(String eventos){
+
+        //String ev[] = {"12/10/2018 20:00:00","12/11/2018 20:00:00","12/12/2018 20:00:00","12/14/2018 20:00:00"};
+        String valu[] = eventos.split("_##");
+        //compactCalendarView.removeAllEvents();
+
+        int val = valu.length;
+        //Log.d("valu length", val+"");
+        for (int i = 0; i <= val-1; i++) {
+            //Log.e("ev",valu[i]);
+            String matriz[] = valu[i].split("_");
+            Log.e("evento",valu[i]);
+
+            if(matriz[1].equals("1")){
+                Notificaciones("Tarea de hoy - "+matriz[6],"Curso: "+matriz[2]+" - "+matriz[3]);
+            } else if(matriz[1].equals("2")){
+                Notificaciones("Materiales de hoy - "+matriz[6],"Curso: "+matriz[2]+" - "+matriz[3]);
+            } else if(matriz[1].equals("3")){
+                Notificaciones("Actividad de hoy - "+matriz[6],matriz[3]);
+            } else if(matriz[1].equals("4")){
+                Notificaciones("Evaluación de hoy - "+matriz[6],"Curso: "+matriz[2]+" - "+matriz[3]);
+            } else if(matriz[1].equals("5")){
+                Notificaciones("Actividad de hoy - "+matriz[6],matriz[3]);
+            }
+
+        }
+
+
+
+    }
+
+    public String getDatos(String entrada) {
+        URL alumUrl = null;
+        //Class<java.net.URL> aClass = java.net.URL.class;
+        String url2="";
+        try{
+            alumUrl = new URL(entrada);
+            HttpURLConnection conn = (HttpURLConnection) alumUrl.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            StringBuffer out = new StringBuffer();
+            byte[] b = new byte[4096];
+            for (int n; (n = is.read(b)) != -1;) {
+                out.append(new String(b, 0, n, "UTF-8"));
+            }
+            String pot=new String(out.toString().getBytes("UTF-8"));
+            url2=pot;
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        Log.d("Consulta",url2);
+        return url2;
+    }
+
+    private void Notificaciones(String data0, String data1){
+        int icono = R.drawable.icono_blanco;
+
+        notificationId++;
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(BackgroundJobService.this);
+        Intent intent = new Intent(BackgroundJobService.this, CalendarioManager.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(BackgroundJobService.this, 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(BackgroundJobService.this, CHANNEL_ID)
+                .setSmallIcon(icono)
+                .setContentTitle(data0)
+                .setContentText(data1)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(data1))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        notificationManager.notify(notificationId, builder.build());
+    }
     /*
     * */
     private void createNotificationChannel() {
@@ -287,7 +471,13 @@ public class BackgroundJobService extends JobService {
         }
     }
 
-
+    public boolean Comparar(String lafecha, String[] fechas){
+        boolean valor= true;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            valor = Arrays.stream(fechas).anyMatch(lafecha::equals);
+        }
+        return valor;
+    }
 
 
     @Override

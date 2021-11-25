@@ -39,7 +39,7 @@ public class PagosManager extends AppCompatActivity {
     ImageView atras;
     String elegido="";
     String ruta="";
-    Button boton;
+    Button boton,boton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,18 @@ public class PagosManager extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String ruta = "http://sdavirtualroom.dyndns.org/sda/controler/files/flayer.jpeg";
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse(ruta));
+                startActivity(intent);
+            }
+        });
+
+        boton2 = (Button) findViewById(R.id.pagar);
+        boton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/980560";
 
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse(ruta));

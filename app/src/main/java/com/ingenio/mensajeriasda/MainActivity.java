@@ -6,13 +6,17 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txt;
     Button mensajes,calendario,calificaciones,pagos,virtualroom,cerrar,atencion;
     ListView listView;
+    int ancho,alto,medida;
 
     @SuppressLint("WrongConstant")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Toast.makeText(getApplicationContext(),isConnected+"01",Toast.LENGTH_LONG).show();
         //Log.i("inicio","inicio");
+
 
         Intent i2 = new Intent(MainActivity.this,MainActivity.class);
         BootReceiver bootReceiver = new BootReceiver();
@@ -67,6 +73,34 @@ public class MainActivity extends AppCompatActivity {
         cerrar = (Button) findViewById(R.id.cerrar);
         listView = (ListView) findViewById(R.id.milista);
         listView.setVisibility(View.GONE);
+
+        Display display = ((WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        ancho = point.x; alto = point.y;
+        if(ancho>alto){
+            medida = ancho/2;
+        } else {
+            medida = ancho/2;
+        }
+        ViewGroup.LayoutParams params1 = atencion.getLayoutParams();
+        params1.width = medida;
+        atencion.setLayoutParams(params1);
+        ViewGroup.LayoutParams params2 = calendario.getLayoutParams();
+        params2.width = medida;
+        calendario.setLayoutParams(params2);
+        ViewGroup.LayoutParams params3 = calificaciones.getLayoutParams();
+        params3.width = medida;
+        calificaciones.setLayoutParams(params3);
+        ViewGroup.LayoutParams params4 = mensajes.getLayoutParams();
+        params4.width = medida;
+        mensajes.setLayoutParams(params4);
+        ViewGroup.LayoutParams params5 = pagos.getLayoutParams();
+        params5.width = medida;
+        pagos.setLayoutParams(params5);
+        ViewGroup.LayoutParams params6 = virtualroom.getLayoutParams();
+        params6.width = medida;
+        virtualroom.setLayoutParams(params5);
 
         atencion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,10 +233,10 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     },
                     100);
-
-            /*Calendar calendar = Calendar.getInstance();
+            /*
+            Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.set(Calendar.HOUR_OF_DAY,18);
+            calendar.set(Calendar.HOUR_OF_DAY,7);
             calendar.set(Calendar.MINUTE,59);
             calendar.set(Calendar.SECOND, 0);
 
@@ -221,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Lista(){
-
+        final ListView lista = (ListView) findViewById(R.id.milista);
         final Alumno alumno = new Alumno();
         final String[] valores = alumno.getAlumnosNombre(getApplicationContext()).split("_");
         final String[] valores2 = alumno.getAlumnos(getApplicationContext()).split("_");
@@ -231,17 +265,20 @@ public class MainActivity extends AppCompatActivity {
         int n = valores.length;
         int i;
         for(i=0; i<n; i++){
+            Log.e("n",n+"");
+            Log.e("valores",valores[i]);
+            Log.e("valores2",valores2[i]);
             Alumnos alumnos = new Alumnos(valores2[i],valores[i]);
             arrayList.add(alumnos);
 
         }
 
         AdapterAlumnos adapterAlumnos = new AdapterAlumnos(this,arrayList);
-        listView.setAdapter(adapterAlumnos);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lista.setAdapter(adapterAlumnos);
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                listView.setVisibility(View.GONE);
+                lista.setVisibility(View.GONE);
             }
         });
 

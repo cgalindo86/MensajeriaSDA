@@ -16,7 +16,18 @@
     <Button
         android:id="@+id/comopagar"
         android:text="¿CÓMO PAGAR?"
+        android:layout_below="@+id/atras"
         android:background="@drawable/bordec1"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/pagar"
+        android:layout_below="@+id/comopagar"
+        android:text="PAGUE AQUÍ"
+        android:background="@drawable/bordec2"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:gravity="center"
@@ -24,7 +35,7 @@
         android:layout_height="wrap_content"/>
     <Spinner
         android:id="@+id/spinner"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/pagar"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="40dp"/>

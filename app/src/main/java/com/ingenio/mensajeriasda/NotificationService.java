@@ -13,8 +13,12 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class NotificationService extends IntentService {
 
@@ -35,14 +39,19 @@ public class NotificationService extends IntentService {
     @TargetApi(Build.VERSION_CODES.O)
     @Override
     protected void onHandleIntent(Intent intent2) {
-        String NOTIFICATION_CHANNEL_ID = getApplicationContext().getString(R.string.app_name);
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        Log.e("formatedDate",formattedDate);
+
+        String NOTIFICATION_CHANNEL_ID = getApplicationContext().getString(R.string.app_name) + " " + formattedDate;
         Context context = this.getApplicationContext();
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent mIntent = new Intent(this, MainActivity.class);
         Resources res = this.getResources();
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
-        String message = "Alarma SDA";
+        String message = "Bienvenido SDA INSTANT MESSAGING"+ " " + formattedDate;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final int NOTIFY_ID = 0; // ID of notification

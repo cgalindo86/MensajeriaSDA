@@ -42,15 +42,15 @@ public class BootReceiver extends BroadcastReceiver {
         }*/
         Log.e("BootReceiver","boot receiver");
 
-        /*Calendar calendar2 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
         calendar2.setTimeInMillis(System.currentTimeMillis());
-        calendar2.set(Calendar.HOUR_OF_DAY,18);
+        calendar2.set(Calendar.HOUR_OF_DAY,7);
         calendar2.set(Calendar.MINUTE,58);
-        calendar2.set(Calendar.SECOND,30);
+        calendar2.set(Calendar.SECOND,0);
 
-        setAlarm(1,calendar2.getTimeInMillis(),context);
+        //setAlarm(1,calendar2.getTimeInMillis(),context);
 
-        Calendar calendar3 = Calendar.getInstance();
+        /*Calendar calendar3 = Calendar.getInstance();
         calendar3.setTimeInMillis(System.currentTimeMillis());
         calendar3.set(Calendar.HOUR_OF_DAY,11);
         calendar3.set(Calendar.MINUTE,17);
@@ -86,12 +86,12 @@ public class BootReceiver extends BroadcastReceiver {
 
     public static void setAlarm(int i, Long timestamp, Context ctx) {
         AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
-        Intent alarmIntent = new Intent(ctx, AlarmReceiver2.class);
+        Intent alarmIntent = new Intent(ctx, AlarmReceiver.class);
         PendingIntent pendingIntent;
         pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
         alarmIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
-        alarmManager.set(AlarmManager.RTC, timestamp,pendingIntent);
-        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 60*1000, pendingIntent);
+        //alarmManager.set(AlarmManager.RTC, timestamp,pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 60*1000, pendingIntent);
     }
 
     public static void setAlarm2(int i, Long timestamp, Context ctx) {
