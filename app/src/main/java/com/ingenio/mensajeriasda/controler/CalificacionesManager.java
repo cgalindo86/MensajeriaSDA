@@ -1,10 +1,9 @@
 package com.ingenio.mensajeriasda.controler;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,18 +15,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.nkzawa.socketio.client.Socket;
-import com.ingenio.mensajeriasda.BootReceiver;
 import com.ingenio.mensajeriasda.MainActivity;
 import com.ingenio.mensajeriasda.R;
 import com.ingenio.mensajeriasda.model.Alumno;
-import com.ingenio.mensajeriasda.model.Eventos;
+import com.ingenio.mensajeriasda.model.Calificaciones;
 import com.ingenio.mensajeriasda.model.MensajeModel;
+import com.ingenio.mensajeriasda.model.Pago;
+import com.ingenio.mensajeriasda.service.ConsultasBD;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,8 +91,8 @@ public class CalificacionesManager extends AppCompatActivity {
         });
 
         Spinner spinner0 = (Spinner) findViewById(R.id.spinner0);
-        String bimestres[] = {"3er Bimestre","4to Bimestre"};
-        final String bimestres2[] = {"3","4"};
+        String bimestres[] = {"1er Bimestre","2do Bimestre","3er Bimestre","4to Bimestre"};
+        final String bimestres2[] = {"1","2","3","4"};
         spinner0.setAdapter(new ArrayAdapter<String>(this, R.layout.itemspinner, bimestres));
         spinner0.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -108,7 +105,7 @@ public class CalificacionesManager extends AppCompatActivity {
                 Alumno alumno = new Alumno();
                 String elegido = alumno.getAlumnoElegido(getApplicationContext());
                 ruta = "http://sdavirtualroom.dyndns.org/sda/controler/files/"+
-                        "archivosApp"+grado+".php?alumno="+elegido+"&curso="+curso+"&bimestre="+bimestre;
+                        "archivosApp.php?alumno="+elegido+"&curso="+curso+"&bimestre="+bimestre+"&grado="+grado;
 
                 LeeDatos2 leeDatos2 = new LeeDatos2();
                 leeDatos2.execute(ruta);
@@ -183,7 +180,7 @@ public class CalificacionesManager extends AppCompatActivity {
             conn.setDoInput(true);
             conn.connect();
             InputStream is = conn.getInputStream();
-            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            byte[] array = new byte[4096]; // buffer temporal de lectura.
             StringBuffer out = new StringBuffer();
             byte[] b = new byte[4096];
             for (int n; (n = is.read(b)) != -1;) {
@@ -191,10 +188,12 @@ public class CalificacionesManager extends AppCompatActivity {
             }
             String pot=new String(out.toString().getBytes("UTF-8"));
             url2=pot;
+            Log.e("ConsultaURL",url2);
         }catch(IOException ex){
             ex.printStackTrace();
+            Log.e("ConsultaERROR","");
         }
-        Log.d("Consulta",url2);
+        //Log.e("Consulta",url2);
         return url2;
     }
 
@@ -208,7 +207,7 @@ public class CalificacionesManager extends AppCompatActivity {
         protected void onPreExecute() {
             progressDoalog = new ProgressDialog(CalificacionesManager.this);
             progressDoalog.setMax(100);
-            progressDoalog.setMessage("Leyendo....");
+            progressDoalog.setMessage("Obteniendo información...");
             progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDoalog.show();
             // TODO Auto-generated method stub
@@ -219,9 +218,23 @@ public class CalificacionesManager extends AppCompatActivity {
         protected String doInBackground(String... params) {
             // TODO Auto-generated method stub
             String dni = params[0];
-            Log.e("ruta",dni);
-
+            //Log.e("ruta",dni);
+            ConsultasBD consultasBD = new ConsultasBD();
+            String dd = consultasBD.Consulta(dni);
+            Log.e("dd",dd);
             String ladata = getDatos(dni);
+            if(ladata.equals("")){
+                //ladata="NO HAY INFO_ _FF0000#";
+                Alumno alumno = new Alumno();
+                String elegido = alumno.getAlumnoElegido(getApplicationContext());
+                ruta = "http://sdavirtualroom.dyndns.org/sda/controler/files/"+
+                        "archivosApp2.php?alumno="+elegido+"&curso="+curso+"&bimestre="+bimestre+"&grado="+grado;
+                Log.e("ruta ingreso lista",ruta);
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse(ruta));
+                startActivity(intent);
+            }
             return ladata;
         }
 
@@ -229,9 +242,9 @@ public class CalificacionesManager extends AppCompatActivity {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            progressDoalog.dismiss();
+            Log.e("ingresoresult",result);
             Lista2(result);
-
+            progressDoalog.dismiss();
         }
 
     }
@@ -276,15 +289,18 @@ public class CalificacionesManager extends AppCompatActivity {
                 txt.setText(e[0]);
                 curso = e[1];
                 //curso = curso.replace(" ","%20");
-                linearLayout.setVisibility(View.VISIBLE);
+                //linearLayout.setVisibility(View.VISIBLE);
 
                 Alumno alumno = new Alumno();
                 String elegido = alumno.getAlumnoElegido(getApplicationContext());
-                ruta = "http://sdavirtualroom.dyndns.org/sda/controler/files/"+
-                        "archivosApp"+grado+".php?alumno="+elegido+"&curso="+curso+"&bimestre="+bimestre;
-
-                LeeDatos2 leeDatos2 = new LeeDatos2();
-                leeDatos2.execute(ruta);
+                ruta = "http://sdavirtualroom.dyndns.org/sda/"+
+                        "ingresoRegistro.php?alumno="+elegido+"&curso="+curso+"&bimestre="+bimestre+"&grado="+grado;
+                Log.e("ruta ingreso lista",ruta);
+                //LeeDatos2 leeDatos2 = new LeeDatos2();
+                //leeDatos2.execute(ruta);
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse(ruta));
+                startActivity(intent);
             }
         });
     }
@@ -293,27 +309,33 @@ public class CalificacionesManager extends AppCompatActivity {
         final ListView lista = (ListView) findViewById(R.id.milista0);
         final TextView txt = (TextView) findViewById(R.id.notaC);
         txt.setText(" ");
-        Log.e("ingreso lista",mensaje);
+        Log.e("ingreso lista2",mensaje);
         final ArrayList<Calificaciones> arrayList = new ArrayList<Calificaciones>();
-        final String d[] = mensaje.split("__");
-        if(mensaje!="" && d.length>=1){
+        final String d[] = mensaje.split("#");
+        //if(mensaje!="" && d.length>=1){
+        if(mensaje!=""){
             int i;
             int n = d.length;
 
             for(i=0; i<n; i++){
-                Log.e("ii",d[i]);
-                String e[] = d[i].split(": ");
-                Log.e("ii2",e[0]);
+                //Log.e("ii",d[i]);
+                String e[] = d[i].split("_");
+                //Log.e("ii2",e[0]);
                 //String data[] = e[0].split(": ");
-                if(e.length>1){
+                /*if(e.length>1){
                     if(e[1].equals("C")){
                         Log.e("la C 1",e[1]);
                         txt.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
                     }
                     Calificaciones calificaciones = new Calificaciones(e[0],e[1],e[2]);
                     arrayList.add(calificaciones);
+                }*/
+                if(e[1].equals("C")){
+                    //Log.e("la C 1",e[1]);
+                    txt.setText("(*) Inicio de alcanzar el logro: haz dado tu mayor esfuerzo, pero recuerda que tienes mucho potencial y nosotros estaremos apoyándote en lo que necesites, no te desanimes, estamos juntos en este proyecto, aún falta un poco más.");
                 }
-
+                Calificaciones calificaciones = new Calificaciones(e[0],e[1],e[2]);
+                arrayList.add(calificaciones);
 
             }
 

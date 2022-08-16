@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,16 +12,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.nkzawa.socketio.client.IO;
 import com.ingenio.mensajeriasda.model.Alumno;
 import com.ingenio.mensajeriasda.model.Eventos;
 import com.ingenio.mensajeriasda.service.Conexion;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -30,7 +36,7 @@ import java.net.URL;
 
 public class InicioSesion extends Activity { //implements GoogleApiClient.OnConnectionFailedListener{
 
-    private Button btnSignIn;
+    private Button btnSignIn,btnSingIn2,clausulas;
 
     private TextView txtNombre;
     private TextView txtEmail;
@@ -40,21 +46,62 @@ public class InicioSesion extends Activity { //implements GoogleApiClient.OnConn
     Boolean ev;
     private ProgressDialog progressDialog;
     String url = "http://sdavirtualroom.dyndns.org/sda";
+    com.github.nkzawa.socketio.client.Socket socket;
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inicio_sesion);
 
-        btnSignIn = (Button)findViewById(R.id.sign_in_button2);
+        btnSignIn = (Button)findViewById(R.id.sign_in_button);
+        btnSingIn2 = (Button)findViewById(R.id.sign_in_button2);
+        clausulas = (Button)findViewById(R.id.clausulas);
+
+        linearLayout = (LinearLayout)findViewById(R.id.bloqueClausulas);
+        linearLayout.setVisibility(View.GONE);
 
         txtNombre = (TextView)findViewById(R.id.txtNombre);
         txtEmail = (TextView)findViewById(R.id.txtEmail);
-        //imagen = (ImageView)findViewById(R.id.imagen);
+        EditText e2 = (EditText)findViewById(R.id.dnialumno);
+        e2.setVisibility(View.GONE);
+        btnSingIn2.setVisibility(View.GONE);
 
+        IO.Options opts = new IO.Options();
+        opts.forceNew = true;
+        opts.reconnection = false;
+        try {
 
+            socket = IO.socket("http://sdavirtualroom.dyndns.org:8013");
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        socket.connect();
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText e = (EditText)findViewById(R.id.dnippff);
+                e.setVisibility(View.GONE);
+                btnSignIn.setVisibility(View.GONE);
+                EditText e2 = (EditText)findViewById(R.id.dnialumno);
+                e2.setVisibility(View.VISIBLE);
+                btnSingIn2.setVisibility(View.VISIBLE);
+
+                String id = e.getText().toString();
+
+                String ruta =  url + "/consultaAlumno.php?id=" + id
+                        +"&opcion=1";
+                Log.e("ruta",ruta);
+                LeeAlumno lee = new LeeAlumno();
+                lee.execute(ruta);
+
+            }
+        });
+
+        btnSingIn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText e = (EditText)findViewById(R.id.dnippff);
@@ -70,16 +117,88 @@ public class InicioSesion extends Activity { //implements GoogleApiClient.OnConn
                 //String pass = p.getText().toString();
                 String ruta =  url + "/consultaAlumno.php?id=" + id
                         +"&id2="+id2+"&opcion=2";
-                Log.d("ruta",ruta);
-                LeeAlumno lee = new LeeAlumno();
-                lee.execute(ruta);
+                Log.e("ruta",ruta);
+                LeeAlumno2 lee2 = new LeeAlumno2();
+                lee2.execute(ruta);
 
+            }
+        });
+
+        clausulas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String ruta = "https://docs.google.com/document/d/1nSALdwHjy7kL-xI9trGTl-EMDWS2ktYtzAIp-ydN6lY/edit?usp=sharing";
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse(ruta));
+                getApplicationContext().startActivity(intent);
             }
         });
 
     }
 
     public class LeeAlumno extends AsyncTask<String, Void, String> {
+
+        ProgressDialog progressDoalog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDoalog = new ProgressDialog(InicioSesion.this);
+            progressDoalog.setMax(100);
+            progressDoalog.setMessage("Leyendo....");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            String dni = params[0];
+            String datAl = getAlumno(dni);
+
+            return datAl;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            progressDoalog.dismiss();
+
+            TextView mensaje = (TextView) findViewById(R.id.mensaje);
+            String[] d = result.split("&");
+            if(d.length>1){
+                linearLayout.setVisibility(View.VISIBLE);
+                String nombre = d[0];
+                String mail = d[1];
+                String clave = d[2];
+
+                String json = "{'mail':'"+mail+"','nombre':'"+nombre+"','clave':'"+clave+"'}";
+
+                try {
+
+                    JSONObject obj = new JSONObject(json);
+                    socket.emit("inicio sesion app",obj);
+                    Log.d("My App", obj.toString());
+
+                } catch (Throwable t) {
+                    Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+                }
+
+                mensaje.setText("Estimado(a) "+nombre+", hemos enviado la clave de acceso al correo "+mail+", el cual tenemos registrado en nuestra base de datos. Por favor revise su bandeja de entrada.");
+            } else {
+                result = result.replace("&","");
+                mensaje.setText(result);
+            }
+
+
+        }
+
+    }
+
+    public class LeeAlumno2 extends AsyncTask<String, Void, String> {
 
         ProgressDialog progressDoalog;
 
@@ -158,6 +277,9 @@ public class InicioSesion extends Activity { //implements GoogleApiClient.OnConn
         String datos[]=datos2.split("#");
         Alumno alumno = new Alumno();
         alumno.setPPFF(datos[0],getApplicationContext());
+        /*String[] rr = datos[0].split("&");
+        Log.e("roles",rr[0]+","+rr[1]+","+rr[2]+","+rr[3]+",");
+        alumno.setAlumnoPPFFRol(rr[3],getApplicationContext());*/
         int i;
         String alumnos = "";
         String nombres = "";

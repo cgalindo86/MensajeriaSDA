@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ingenio.mensajeriasda">
     <dist:module dist:instant="true" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,13 +22,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
         <activity android:name=".InicioSesion"></activity>
         <activity android:name=".controler.DetalleMensaje"></activity>
         <activity android:name=".controler.MensajeManager"></activity>
         <activity android:name=".controler.CalendarioManager"></activity>
+        <activity android:name=".controler.CanalesAtencion"></activity>
         <activity android:name=".controler.CalificacionesManager"></activity>
+        <activity android:name=".controler.MiQr"></activity>
         <activity android:name=".controler.PagosManager"></activity>
-
+        <activity android:name=".controler.MapsActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".controler.TomarFoto"></activity>
         <receiver android:name=".BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -59,6 +66,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
     <uses-feature

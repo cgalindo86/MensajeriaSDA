@@ -1,34 +1,39 @@
 package com.ingenio.mensajeriasda.controler;
 
-import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.nkzawa.socketio.client.Socket;
-import com.ingenio.mensajeriasda.BootReceiver;
 import com.ingenio.mensajeriasda.MainActivity;
 import com.ingenio.mensajeriasda.R;
 import com.ingenio.mensajeriasda.model.Alumno;
+import com.ingenio.mensajeriasda.model.Mensaje;
 import com.ingenio.mensajeriasda.model.MensajeModel;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MensajeManager extends AppCompatActivity {
 
     ImageView atras;
-    String elegido="";
+    Button sincronizar;
+    String elegido="", ppff="";
+    TextView datosincronizacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class MensajeManager extends AppCompatActivity {
         final MensajeModel mensajeModel = new MensajeModel();
 
         final Alumno alumno = new Alumno();
+        ppff = alumno.getPPFFDni(getApplicationContext());
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         String[] valores = alumno.getAlumnosNombre(getApplicationContext()).split("_");
         final String[] valores2 = alumno.getAlumnos(getApplicationContext()).split("_");
@@ -49,7 +55,11 @@ public class MensajeManager extends AppCompatActivity {
             {
                 elegido = valores2[position];
                 alumno.setAlumnoElegido(elegido,getApplicationContext());
-                Lista2(mensajeModel.getMensaje(getApplicationContext()));
+                String ruta = "http://sdavirtualroom.dyndns.org/sda/controler/consultaAlumno.php?accionget=14"+
+                        "&alumnoget="+elegido+"&ppffget="+ppff;
+                Log.e("laruta",ruta);
+                LeeAlumno leeAlumno = new LeeAlumno();
+                leeAlumno.execute(ruta);
             }
 
             @Override
@@ -68,9 +78,63 @@ public class MensajeManager extends AppCompatActivity {
             }
         });
 
+        sincronizar = (Button) findViewById(R.id.sincronizar);
+        sincronizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ruta = "http://sdavirtualroom.dyndns.org/sda/controler/consultaAlumno.php?accionget=14"+
+                        "&alumnoget="+elegido+"&ppffget="+ppff;
+                Log.e("laruta",ruta);
+                LeeAlumno leeAlumno = new LeeAlumno();
+                leeAlumno.execute(ruta);
 
+            }
+        });
 
-        Lista(mensajeModel.getMensaje(getApplicationContext()));
+        /*String ruta = "http://sdavirtualroom.dyndns.org/sda/controler/consultaAlumno.php?accionget=14"+
+                "&alumnoget="+elegido+"&ppffget="+ppff;
+        Log.e("laruta",ruta);
+        LeeAlumno leeAlumno = new LeeAlumno();
+        leeAlumno.execute(ruta);*/
+
+    }
+
+    public class LeeAlumno extends AsyncTask<String, Void, String> {
+
+        ProgressDialog progressDoalog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDoalog = new ProgressDialog(MensajeManager.this);
+            progressDoalog.setMax(100);
+            progressDoalog.setMessage("Leyendo....");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            String dni = params[0];
+
+            String datAl = getDatos(dni);
+
+            return datAl;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            progressDoalog.dismiss();
+
+            Log.e("resres",result);
+            MensajeModel mensajeModel = new MensajeModel();
+            mensajeModel.setMensaje(result,getApplicationContext());
+            Lista2(result);
+        }
 
     }
 
@@ -129,6 +193,31 @@ public class MensajeManager extends AppCompatActivity {
         AdapterMensajes adapterMensajes = new AdapterMensajes(this,arrayList);
         lista.setAdapter(adapterMensajes);
 
+    }
+
+    public String getDatos(String entrada) {
+        URL alumUrl = null;
+        String url2="";
+        try{
+            alumUrl = new URL(entrada);
+            HttpURLConnection conn = (HttpURLConnection) alumUrl.openConnection();
+            //conn.setRequestMethod("GET");
+            //conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            StringBuffer out = new StringBuffer();
+            byte[] b = new byte[4096];
+            for (int n; (n = is.read(b)) != -1;) {
+                out.append(new String(b, 0, n, "UTF-8"));
+            }
+            String pot=new String(out.toString().getBytes("UTF-8"));
+            url2=pot;
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        Log.d("Consulta",url2);
+        return url2;
     }
 
     @Override

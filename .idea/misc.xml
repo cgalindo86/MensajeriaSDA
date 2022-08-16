@@ -3,16 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/drawable/bordec2.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/drawable/bordec3.xml" value="0.1" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/barra.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/caja_guardar.xml" value="0.1" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/calificaciones_manager.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/canales_atencion.xml" value="0.33" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/contenedor.xml" value="0.1" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/detalle_mensaje.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/inicio_sesion.xml" value="0.14" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/item_calificaciones.xml" value="0.25" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/items.xml" value="0.1" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/items2.xml" value="0.1" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/itemspinner.xml" value="0.1" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/itemspinner2.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/mapita.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/mensaje_manager.xml" value="0.18" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/miqr.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/miqr2.xml" value="0.1" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/pagos.xml" value="0.25" />
-        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/pagos_manager.xml" value="0.1" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/pagos_manager.xml" value="0.25" />
+        <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/tomar_foto.xml" value="0.1" />
       </map>
     </option>
   </component>

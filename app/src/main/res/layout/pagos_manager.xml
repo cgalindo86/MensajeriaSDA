@@ -5,42 +5,93 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controler.MensajeManager">
-    <ImageView
-        android:id="@+id/atras"
-        android:src="@drawable/boton_atras"
-        android:background="#B6EDF6"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp"/>
-    <Button
-        android:id="@+id/comopagar"
-        android:text="¿CÓMO PAGAR?"
-        android:layout_below="@+id/atras"
-        android:background="@drawable/bordec1"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
+
+    <LinearLayout
+        android:id="@+id/data1"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/pagar"
-        android:layout_below="@+id/comopagar"
-        android:text="PAGUE AQUÍ"
-        android:background="@drawable/bordec2"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/atras"
+            android:src="@drawable/boton_atras"
+            android:background="#B6EDF6"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <Button
+            android:id="@+id/comopagar"
+            android:text="¿CÓMO PAGAR?"
+            android:background="@drawable/bordec1"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/pagar"
+            android:text="PAGUE AQUÍ"
+            android:background="@drawable/bordec2"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
     <Spinner
         android:id="@+id/spinner"
-        android:layout_below="@+id/pagar"
+        android:layout_below="@+id/data1"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="40dp"/>
+    <LinearLayout
+        android:id="@+id/data2"
+        android:layout_below="@+id/spinner"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/b2022"
+            android:text="2022"
+            android:textAlignment="center"
+            android:background="@drawable/bordec1"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/b2021"
+            android:text="2021"
+            android:textAlignment="center"
+            android:background="@drawable/bordec2"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <!--<Button
+            android:id="@+id/b2020"
+            android:text="2020"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:background="@drawable/bordec2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/b2019"
+            android:text="2019"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bordec2"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>-->
+    </LinearLayout>
+
+
     <ListView
-        android:layout_below="@id/spinner"
+        android:layout_below="@id/data2"
         android:id="@+id/milista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

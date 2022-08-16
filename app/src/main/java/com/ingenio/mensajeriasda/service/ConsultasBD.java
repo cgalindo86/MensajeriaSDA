@@ -17,6 +17,7 @@ public class ConsultasBD {
     public String Consulta(String url){
         URL miUrl=null;
         String conectado="";
+        String codigoRespuesta="";
         //Log.d("Comprobar",url+"+"+context);
         try{
             //String url2=url;
@@ -26,7 +27,7 @@ public class ConsultasBD {
             conn.setDoInput(true);
 
             conn.connect();
-            String codigoRespuesta = Integer.toString(conn.getResponseCode());
+            codigoRespuesta = Integer.toString(conn.getResponseCode());
             if(codigoRespuesta.equals("200")){//Vemos si es 200 OK y leemos el cuerpo del mensaje.
                 conectado="ok";
 
@@ -37,7 +38,7 @@ public class ConsultasBD {
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        return conectado;
+        return codigoRespuesta;
     }
 
     public String getDatos(String entrada) {

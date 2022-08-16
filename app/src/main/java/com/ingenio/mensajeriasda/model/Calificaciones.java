@@ -1,15 +1,15 @@
-package com.ingenio.mensajeriasda.controler;
+package com.ingenio.mensajeriasda.model;
 
 public class Calificaciones {
 
     String item;
     String nota;
-    String tipo;
+    String color;
 
-    public Calificaciones(String item, String nota, String tipo) {
+    public Calificaciones(String item, String nota, String color) {
         this.item = item;
         this.nota = nota;
-        this.tipo = tipo;
+        this.color = color;
     }
 
     public String getItem() {
@@ -28,11 +28,11 @@ public class Calificaciones {
         this.nota = nota;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getcolor() {
+        return color;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setcolor(String color) {
+        this.color = color;
     }
 }

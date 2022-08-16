@@ -35,20 +35,64 @@
                 android:layout_gravity="center"
                 android:layout_width="300dp"
                 android:layout_height="300dp" />
-            <EditText
-                android:id="@+id/dnippff"
-                android:hint="DNI APODERADO"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/dnippff"
+                    android:hint="DNI FAMILIAR"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:text="SOLICITAR CLAVE TOKEN"
+                    android:id="@+id/sign_in_button"
+                    android:background="#A00000FF"
+                    android:textColor="#FFFFFF"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mensaje"
+                android:layout_margin="10dp"
+                android:textColor="@color/colorRojo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/bloqueClausulas"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="12dp"
+                    android:text="Al iniciar sesión en nuestra aplicación usted manifiesta que está de acuerdo con las CLAÚSULAS INFORMATIVA DEL TRATAMIENTO DE DATOS PERSONALES."
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:text="VER CLAÚSULAS"
+                    android:id="@+id/clausulas"
+                    android:background="#A00000FF"
+                    android:textColor="#FFFFFF"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/dnialumno"
-                android:hint="DNI ALUMNO"
+                android:hint="CLAVE DE ACCESO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
                 android:text="INICIAR SESIÓN"
                 android:id="@+id/sign_in_button2"
-                android:background="#A00000FF"
+                android:background="@color/colorRojo"
                 android:textColor="#FFFFFF"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.ingenio.mensajeriasda.controler;
+package com.ingenio.mensajeriasda.model;
 
 import android.util.Log;
 

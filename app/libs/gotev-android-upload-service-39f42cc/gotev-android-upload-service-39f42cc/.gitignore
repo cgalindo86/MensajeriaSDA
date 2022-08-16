@@ -1,0 +1,10 @@
+local.properties
+.gradle
+uploadservice
+build
+examples
+.idea
+android-upload-service.iml
+uploadservice-ftp/test-server/linux/.vagrant
+uploadservice-ftp.iml
+uploadservice-okhttp.iml

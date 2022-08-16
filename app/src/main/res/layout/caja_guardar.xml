@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/caja0"
+        android:background="#AAB8A1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/selRuta"
+            android:text="SELECCIONAR RUTA"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/selSaldo"
+            android:text="VERIFICAR SALDO"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/caja"
+        android:background="#AAB8A1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/rutaA"
+            android:text="A"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/rutaB"
+            android:text="B"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/rutaC"
+            android:text="C"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/rutaD"
+            android:text="D"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/rutaE"
+            android:text="E"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/volver1"
+            android:textColor="#ffffff"
+            android:background="@color/colorAzul"
+            android:layout_margin="5dp"
+            android:text="VOLVER"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/caja2"
+        android:background="#AAB8A1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="SALDO: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/saldo"
+            android:text="S/. 5.00"
+            android:textColor="#FF0000"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/recarga"
+            android:textColor="#ffffff"
+            android:background="@color/colorAzul"
+            android:layout_margin="5dp"
+            android:text="RECARGA"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/volver2"
+            android:textColor="#ffffff"
+            android:background="@color/colorAzul"
+            android:layout_margin="5dp"
+            android:text="VOLVER"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/caja3"
+        android:background="#AAB8A1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/recarga5"
+            android:textColor="#ffffff"
+            android:background="@color/colorAzul"
+            android:layout_margin="5dp"
+            android:text="S/ 5.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/recarga10"
+            android:textColor="#ffffff"
+            android:background="@color/colorAzul"
+            android:layout_margin="5dp"
+            android:text="S/ 10.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/recarga20"
+            android:textColor="#ffffff"
+            android:background="@color/colorAzul"
+            android:layout_margin="5dp"
+            android:text="S/ 20.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/volver3"
+            android:textColor="#ffffff"
+            android:background="@color/colorRojo"
+            android:layout_margin="5dp"
+            android:text="VOLVER"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

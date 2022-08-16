@@ -195,5 +195,65 @@ public class Alumno {
         } catch (IOException ioe){}
     }
 
+    public String getAlumnoPPFFRol(Context context) {
+        String nombre2="";
+        try {
+
+            FileInputStream fin = context.openFileInput("ppffrol.txt");
+            int size;
+            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            StringBuffer out = new StringBuffer();
+            byte[] b = new byte[4096];
+            for (int n; (n = fin.read(b)) != -1;) {
+                out.append(new String(b, 0, n, "UTF-8"));
+            }
+            String pot=new String(out.toString().getBytes("UTF-8"));
+            nombre2=pot;
+            Log.d("nombre dentro",nombre2);
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+        return nombre2;
+    }
+
+    public void setAlumnoPPFFRol(String datos, Context context) {
+        try{
+            String nombre2=datos;
+            FileOutputStream fout1 = context.openFileOutput("ppffrol",MODE_PRIVATE);
+            fout1.write(nombre2.getBytes());
+            fout1.close();
+        } catch (IOException ioe){}
+    }
+
+    public String getAlumnoOpcion(Context context) {
+        String nombre2="";
+        try {
+
+            FileInputStream fin = context.openFileInput("alumno_opcion.txt");
+            int size;
+            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            StringBuffer out = new StringBuffer();
+            byte[] b = new byte[4096];
+            for (int n; (n = fin.read(b)) != -1;) {
+                out.append(new String(b, 0, n, "UTF-8"));
+            }
+            String pot=new String(out.toString().getBytes("UTF-8"));
+            nombre2=pot;
+            Log.d("nombre dentro",nombre2);
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+        return nombre2;
+    }
+
+    public void setAlumnoOpcion(String datos, Context context) {
+        try{
+            String nombre2=datos;
+            FileOutputStream fout1 = context.openFileOutput("alumno_opcion.txt",MODE_PRIVATE);
+            fout1.write(nombre2.getBytes());
+            fout1.close();
+        } catch (IOException ioe){}
+    }
+
 
 }

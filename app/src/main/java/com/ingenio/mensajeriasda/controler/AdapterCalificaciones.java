@@ -1,42 +1,19 @@
 package com.ingenio.mensajeriasda.controler;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.ingenio.mensajeriasda.R;
-import com.ingenio.mensajeriasda.model.Alumno;
+import com.ingenio.mensajeriasda.model.Calificaciones;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterCalificaciones extends BaseAdapter {
 
@@ -79,7 +56,7 @@ public class AdapterCalificaciones extends BaseAdapter {
         TextView t2 = (TextView) v.findViewById(R.id.nota);
 
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.califica);
-        linearLayout.setBackgroundColor(Color.parseColor("#"+calificaciones.getTipo()));
+        linearLayout.setBackgroundColor(Color.parseColor("#"+calificaciones.getcolor()));
         /*if(calificaciones.getTipo().equals("1")){
             linearLayout.setBackgroundColor(Color.parseColor("#F2C9A4"));
         } else {
@@ -99,7 +76,7 @@ public class AdapterCalificaciones extends BaseAdapter {
             t2.setTextColor(Color.parseColor("#F13333"));
             t2.setText("*");
             //t2.setText();
-        } else if(calificaciones.getNota().equals("")){
+        } else if(calificaciones.getNota().equals(" ")){
             t2.setText(" ");
         } else {
             int lanota = Integer.parseInt(calificaciones.getNota());

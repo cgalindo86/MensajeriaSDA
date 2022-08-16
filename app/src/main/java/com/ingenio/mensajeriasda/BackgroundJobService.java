@@ -9,12 +9,10 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -22,12 +20,9 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.ingenio.mensajeriasda.controler.CalendarioManager;
 import com.ingenio.mensajeriasda.controler.DetalleMensaje;
-import com.ingenio.mensajeriasda.controler.MensajeManager;
 import com.ingenio.mensajeriasda.model.Alumno;
-import com.ingenio.mensajeriasda.model.Eventos;
 import com.ingenio.mensajeriasda.model.MensajeModel;
 
 import org.json.JSONException;
@@ -38,7 +33,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -49,7 +43,6 @@ import java.util.Calendar;
 
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class BackgroundJobService extends JobService {
 
 
@@ -60,14 +53,44 @@ public class BackgroundJobService extends JobService {
     com.github.nkzawa.socketio.client.Socket socket;
     float time;
     String[] fechas= new String[]{
-            "2021-11-06","2021-11-07","2021-11-13","2021-11-14",
-            "2021-11-20","2021-11-21","2021-11-27","2021-11-28",
-            "2021-12-04","2021-12-05","2021-12-11","2021-12-12",
-            "2021-12-08"
+            "2022-02-24","2022-02-25","2022-02-26","2022-02-27",
+            "2022-02-28","2022-03-01","2022-03-05","2022-03-06",
+            "2022-03-12","2022-03-13","2022-03-19","2022-03-20",
+            "2022-03-26","2022-03-27","2022-04-02","2022-04-02",
+            "2022-04-09","2022-04-10","2022-04-14","2022-04-15",
+            "2022-04-16","2022-04-17","2022-04-23","2022-04-24",
+            "2022-04-30","2022-05-01","2022-05-07","2022-05-08",
+            "2022-05-09","2022-05-10","2022-05-11","2022-05-12",
+            "2022-05-13","2022-05-14","2022-05-15","2022-05-21",
+            "2022-05-22","2022-05-28","2022-05-29","2022-06-04",
+            "2022-06-05","2022-06-11","2022-06-12","2022-05-18",
+            "2022-06-19","2022-06-25","2022-06-26","2022-07-02",
+            "2022-07-03","2022-07-09","2022-07-10","2022-07-16",
+            "2022-07-17","2022-07-23","2022-07-24","2022-07-25",
+            "2022-07-26","2022-07-27","2022-07-28","2022-07-29",
+            "2022-07-30","2022-07-31","2022-08-06","2022-08-07",
+            "2022-08-13","2022-08-14","2022-08-20","2022-08-21",
+            "2022-08-27","2022-08-28","2022-08-30","2022-09-03",
+            "2022-09-04","2022-09-10","2022-09-11","2022-09-17",
+            "2022-09-18","2022-09-24","2022-09-25","2022-10-01",
+            "2022-10-02","2022-10-03","2022-10-04","2022-10-05",
+            "2022-10-06","2022-10-07","2022-10-08","2022-10-09",
+            "2022-10-15","2022-10-16","2022-10-22","2022-10-23",
+            "2022-10-29","2022-10-30","2022-11-01","2022-11-05",
+            "2022-11-06","2022-11-12","2022-11-13","2022-11-19",
+            "2022-11-20","2022-11-26","2022-11-27","2022-12-03",
+            "2022-12-04","2022-12-08","2022-12-10","2022-12-11",
+            "2022-12-17","2022-12-18","2022-12-19","2022-12-20",
+            "2022-12-21","2022-12-22","2022-12-23","2022-12-24",
+            "2022-12-25","2022-12-26","2022-12-27","2022-12-28",
+            "2022-12-29","2022-12-30","2022-12-31"
     };
 
     String[] horas= new String[]{
-            "07:31","13:31"
+            "I3_06:31","I4_06:35","I5_06:40","P1_06:45",
+            "P2_06:50","P3_06:55","P4_07:01","P5_07:05",
+            "P6_07:10","S1_07:15","S2_07:20","S3_07:25",
+            "S4_07:30","S5_07:35"
     };
 
     String[] tareas = new String[]{};
@@ -94,19 +117,26 @@ public class BackgroundJobService extends JobService {
 
         context = getApplicationContext();
 
-        if(Comparar(formattedDate2,horas)){
+        Alumno alumno = new Alumno();
+        Log.e("ver",alumno.getAlumnos(getApplicationContext()));
+        String als[] = alumno.getAlumnos(getApplicationContext()).split("_");
 
-            Alumno alumno = new Alumno();
-            Log.e("ver",alumno.getAlumnos(getApplicationContext()));
-            String als[] = alumno.getAlumnos(getApplicationContext()).split("_");
-            int i;
-            for(i=0; i<=als.length-1; i++){
-                String dni = als[i];
-                BuscarEventos(dni,formattedDate);
+        int i;
+        for(i=0; i<=als.length-1; i++){
+            String dni = als[i];
+            String dalumno1[] = alumno.getAlumnoData(dni,getApplicationContext()).split("&");
+            if(dalumno1.length>=2){
+                String grado = dalumno1[2];
+
+                if(Comparar2(grado+"_"+formattedDate2,horas)){
+
+                    BuscarEventos(dni,formattedDate);
+
+                }
             }
 
-
         }
+
 
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
@@ -475,6 +505,14 @@ public class BackgroundJobService extends JobService {
         boolean valor= true;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             valor = Arrays.stream(fechas).anyMatch(lafecha::equals);
+        }
+        return valor;
+    }
+
+    public boolean Comparar2(String lafecha, String[] fechas){
+        boolean valor= true;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            valor = Arrays.stream(fechas).anyMatch(lafecha::contains);
         }
         return valor;
     }

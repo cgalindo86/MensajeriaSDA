@@ -1,11 +1,8 @@
 package com.ingenio.mensajeriasda.controler;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,24 +12,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.nkzawa.socketio.client.Socket;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
-import com.ingenio.mensajeriasda.BootReceiver;
-import com.ingenio.mensajeriasda.MainActivity;
 import com.ingenio.mensajeriasda.R;
 import com.ingenio.mensajeriasda.model.Alumno;
+import com.ingenio.mensajeriasda.model.Evento;
 import com.ingenio.mensajeriasda.model.Eventos;
 import com.ingenio.mensajeriasda.model.MensajeModel;
 import com.ingenio.mensajeriasda.service.Conexion;
-import com.ingenio.mensajeriasda.service.ConsultasBD;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,7 +88,7 @@ public class CalendarioManager extends AppCompatActivity {
 
         Conexion conexion = new Conexion();
         ruta = conexion.getUrl(getApplicationContext());
-        Log.d("ruta",ruta);
+
 
         Date date = new Date();
         SimpleDateFormat formatterc = new SimpleDateFormat("dd/MM/yyyy");
@@ -107,7 +99,7 @@ public class CalendarioManager extends AppCompatActivity {
         mesActual = mes;
         cmes = Integer.parseInt(mes);
         canio = Integer.parseInt(fechac[2]);
-        Log.d("nmes-canio",mes+"-"+canio);
+        Log.e("nmes-canio",mes+"-"+canio);
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM- yyyy", Locale.getDefault());
         String uu = (sdf.format(date.getTime())).toUpperCase();
         t = (TextView) findViewById(R.id.textoMes);
@@ -129,7 +121,7 @@ public class CalendarioManager extends AppCompatActivity {
         ruta = "http://sdavirtualroom.dyndns.org/sda/controler/consultaAlumno.php?accionget=2&alumnoget="+dalumno
                 +"&gradoget="+grado+"&seccionget="+seccion+"&nivelget="+nivel+"&anioget="+anio
                 +"&mesget="+mes;
-
+        Log.e("ruta",ruta);
         LeeDatos leeDatos = new LeeDatos();
         leeDatos.execute(ruta);
 
@@ -153,7 +145,7 @@ public class CalendarioManager extends AppCompatActivity {
                 if(dd[1].equals("Nov")){ nmes = "11"; cmes=11; }
                 if(dd[1].equals("Dec")){ nmes = "12"; cmes=12; }
                 //calendarioo.setVisibility(View.VISIBLE);
-
+                anio = dd[5];
                 Log.e("dia cambio4", nmes+"/"+dd[2]+"/"+dd[5]);
                 String lafecha = nmes+"/"+dd[2]+"/"+dd[5];
 
@@ -165,6 +157,7 @@ public class CalendarioManager extends AppCompatActivity {
                     }
 
                     mesActual = mes;
+                    Log.e("cambioif11",fechaActual);
                 } else {
                     if(dd[2].equals("01")){
                         fechaActual = nmes+"/01/"+anio;
@@ -173,9 +166,11 @@ public class CalendarioManager extends AppCompatActivity {
                     }
                     //fechaActual = nmes+"/01/"+anio;
                     mesActual = nmes;
+                    Log.e("cambioif21",fechaActual);
                 }
-
-                Extraccion(fechaActual,mesActual,elegido);
+                //Extraccion(fechaActual,mesActual+"_"+anio,elegido);
+                Log.e("extraccion1",fechaActual+"-"+mesActual+"-"+anio+"-"+elegido);
+                Extraccion(fechaActual,mesActual+"_"+anio,elegido);
             }
 
             @Override
@@ -197,7 +192,7 @@ public class CalendarioManager extends AppCompatActivity {
                 if(dd[1].equals("Oct")){ nmes = "10"; cmes=10; }
                 if(dd[1].equals("Nov")){ nmes = "11"; cmes=11; }
                 if(dd[1].equals("Dec")){ nmes = "12"; cmes=12; }
-                Log.d("mmes__", nmes+"");
+                Log.e("mmes__", nmes+"");
                 //Lee1("1",nmes);
                 String uu = (dateFormat.format(firstDayOfNewMonth)).toUpperCase();
                 t.setText(uu);
@@ -220,6 +215,7 @@ public class CalendarioManager extends AppCompatActivity {
                 ruta = "http://sdavirtualroom.dyndns.org/sda/controler/consultaAlumno.php?accionget=2&alumnoget="+dalumno
                         +"&gradoget="+grado+"&seccionget="+seccion+"&nivelget="+nivel+"&anioget="+dd[5]
                         +"&mesget="+nmes;
+                Log.e("ruta",ruta);
 
                 LeeDatos leeDatos = new LeeDatos();
                 leeDatos.execute(ruta);
@@ -227,9 +223,11 @@ public class CalendarioManager extends AppCompatActivity {
                 if(nmes.equals(mes)){
                     fechaActual = mes+"/"+dia+"/"+anio;
                     mesActual = mes;
+                    Log.e("cambioif12",fechaActual);
                 } else {
                     fechaActual = nmes+"/01/"+anio;
                     mesActual = nmes;
+                    Log.e("cambioif22",fechaActual);
                 }
                 //pedir info a controler/consultaAlumno.php?accionget=2&alumnoget=12345678&mesget=nmes;
                 //EventosEnCalendario("",nmes+"");
@@ -256,8 +254,6 @@ public class CalendarioManager extends AppCompatActivity {
         protected String doInBackground(String... params) {
             // TODO Auto-generated method stub
             String dni = params[0];
-            Log.e("ruta",dni);
-
             String ladata = getDatos(dni);
             return ladata;
         }
@@ -267,9 +263,11 @@ public class CalendarioManager extends AppCompatActivity {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             progressDoalog.dismiss();
+            Log.e("rutares",mesActual+"-"+elegido);
+            Log.e("rutares",result);
             Eventos eventos = new Eventos();
-            eventos.setDatosMes(result,mesActual,elegido,getApplicationContext());
-            Log.e("resultado", result);
+            eventos.setDatosMes(result,mesActual+"_"+anio,elegido,getApplicationContext());
+            //Log.e("resultado", result);
             EventosEnCalendario(result);
 
         }
@@ -284,7 +282,7 @@ public class CalendarioManager extends AppCompatActivity {
 
         int val = valu.length;
         //Log.d("valu length", val+"");
-        for (int i = 0; i < val-1; i++) {
+        for (int i = 0; i < val; i++) {
             //Log.e("ev",valu[i]);
             String matriz[] = valu[i].split("_");
             //Log.e("matriz",valu[i]);
@@ -311,8 +309,8 @@ public class CalendarioManager extends AppCompatActivity {
             compactCalendarView.addEvent(event);
 
         }
-
-        Extraccion(fechaActual,mesActual,elegido);
+        Log.e("extraccion2",fechaActual+"-"+mesActual+"-"+anio+"-"+elegido);
+        Extraccion(fechaActual,mesActual+"_"+anio,elegido);
 
     }
 
@@ -381,6 +379,8 @@ public class CalendarioManager extends AppCompatActivity {
         for (int i = 0; i < val-1; i++) {
 
             String matriz[] = valu[i].split("_");
+            Log.e("extra valu",valu[i]);
+            //Log.e("mesActual",mes);
             if(fecha.equals(matriz[0])){
                 datos = datos + valu[i] + "#";
                 if(matriz.length>5){

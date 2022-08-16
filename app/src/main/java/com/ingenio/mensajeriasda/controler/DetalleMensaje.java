@@ -94,7 +94,7 @@ String info = mensajes.getSupervisor()+"%"+mensajes.getSupervisorMail()+"%"+mens
                     i.setPackage("com.whatsapp.w4b");
                     startActivity(i);
                 } else {
-                    Toast.makeText(getApplicationContext(),"Usted no tiene instaladada la app WhatsApp",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Usted no tiene instaladada la app WhatsApp",Toast.LENGTH_LONG).show();
                     MensajeModel mensajeModel = new MensajeModel();
                     String info = mensajeModel.getMensajeElegido(getApplicationContext());
                     String info2[] = info.split("%");

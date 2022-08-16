@@ -2,29 +2,18 @@ package com.ingenio.mensajeriasda.controler;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ingenio.mensajeriasda.MainActivity;
 import com.ingenio.mensajeriasda.R;
-import com.ingenio.mensajeriasda.model.MensajeModel;
+import com.ingenio.mensajeriasda.model.Pago;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AdapterPagos extends BaseAdapter {
 
