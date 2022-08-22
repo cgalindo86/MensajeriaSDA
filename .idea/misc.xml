@@ -25,10 +25,11 @@
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/pagos.xml" value="0.25" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/pagos_manager.xml" value="0.25" />
         <entry key="..\:/Users/Administrador/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/tomar_foto.xml" value="0.1" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/MensajeriaSDA/app/src/main/res/layout/caja_guardar.xml" value="0.3625" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

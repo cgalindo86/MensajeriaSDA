@@ -73,14 +73,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double lng = 0.0;
     double nLat = 0.0;
     double nLng = 0.0;
-    String mensaje1="", ruta="", pagolink="";
+    String mensaje1="", ruta="", pagolink="", medio="";
     String direccion = "", rutaSeleccionada = "";
     private Vibrator vibrator;
-    LinearLayout caja,caja0,caja2,caja3;
+    LinearLayout caja,caja0,caja2,caja3,caja4;
     double nDistan = 0.0;
     Boolean valor = false;
-    Button btn,rutaA,rutaB,rutaC,rutaD, rutaE,volver1,volver2,volver3,selRuta,selSaldo,recarga;
-    Button recarga5,recarga10,recarga20;
+    Button btn,rutaA,rutaB,rutaC,rutaD, rutaE,volver1,volver2,volver3,volver4,selRuta,selSaldo,recarga;
+    Button recarga3,recarga12,recarga24,niubiz,plin,yape,pagar;
     com.github.nkzawa.socketio.client.Socket socket;
     Context context;
     TextView saldo;
@@ -111,21 +111,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         caja = (LinearLayout) findViewById(R.id.caja);
         caja2 = (LinearLayout) findViewById(R.id.caja2);
         caja3 = (LinearLayout) findViewById(R.id.caja3);
+        caja4 = (LinearLayout) findViewById(R.id.caja4);
         caja0.setVisibility(View.VISIBLE);
         caja.setVisibility(View.GONE);
         caja2.setVisibility(View.GONE);
         caja3.setVisibility(View.GONE);
+        caja4.setVisibility(View.GONE);
 
         btn = (Button) findViewById(R.id.cancelar);
         volver1 = (Button) findViewById(R.id.volver1);
         volver2 = (Button) findViewById(R.id.volver2);
         volver3 = (Button) findViewById(R.id.volver3);
+        volver4 = (Button) findViewById(R.id.volver4);
         selSaldo = (Button) findViewById(R.id.selSaldo);
         selRuta = (Button) findViewById(R.id.selRuta);
         recarga = (Button) findViewById(R.id.recarga);
-        recarga5 = (Button) findViewById(R.id.recarga5);
-        recarga10 = (Button) findViewById(R.id.recarga10);
-        recarga20 = (Button) findViewById(R.id.recarga20);
+        recarga3 = (Button) findViewById(R.id.recarga3);
+        recarga12 = (Button) findViewById(R.id.recarga12);
+        recarga24 = (Button) findViewById(R.id.recarga24);
+
+        yape = (Button) findViewById(R.id.yape);
+        plin = (Button) findViewById(R.id.plin);
+        niubiz = (Button) findViewById(R.id.niubiz);
+        pagar = (Button) findViewById(R.id.pagar);
 
         recarga.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,50 +142,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 caja2.setVisibility(View.GONE);
                 caja3.setVisibility(View.VISIBLE);
                 caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.GONE);
             }
         });
 
-        recarga5.setOnClickListener(new View.OnClickListener() {
+        recarga3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pagolink="5";
+                pagolink="3";
+                Limpiar2();
+                recarga3.setBackgroundResource(R.drawable.bordec1);
+            }
+        });
+
+        recarga12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pagolink="12";
+                Limpiar2();
+                recarga12.setBackgroundResource(R.drawable.bordec1);
+            }
+        });
+
+        recarga24.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pagolink="24";
+                Limpiar2();
+                recarga24.setBackgroundResource(R.drawable.bordec1);
+            }
+        });
+
+        pagar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Limpiar2();
+
                 ruta = conexion.getUrl(getApplicationContext());
-                ruta = ruta + "/controler/consultaAlumno.php?accionget=9&saldoget=5&alumnoget="+alumno.getAlumnoElegido(getApplicationContext())+"&ppffget="+alumno.getPPFFDni(getApplicationContext());
+                ruta = ruta + "/controler/consultaAlumno.php?accionget=9&saldoget="+pagolink+"&alumnoget="+alumno.getAlumnoElegido(getApplicationContext())+"&ppffget="+alumno.getPPFFDni(getApplicationContext())+"&medioget="+medio+"&rutaget="+rutaSeleccionada;
                 Log.e("rutasaldo",ruta);
                 Lee2 lee2 = new Lee2();
                 lee2.execute(ruta);
-
-
             }
         });
 
-        recarga10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pagolink="10";
-                ruta = conexion.getUrl(getApplicationContext());
-                ruta = ruta + "/controler/consultaAlumno.php?accionget=9&saldoget=10&alumnoget="+alumno.getAlumnoElegido(getApplicationContext())+"&ppffget="+alumno.getPPFFDni(getApplicationContext());
-                Log.e("rutasaldo",ruta);
-                Lee2 lee2 = new Lee2();
-                lee2.execute(ruta);
 
-
-            }
-        });
-
-        recarga20.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pagolink="20";
-                ruta = conexion.getUrl(getApplicationContext());
-                ruta = ruta + "/controler/consultaAlumno.php?accionget=9&saldoget=20&alumnoget="+alumno.getAlumnoElegido(getApplicationContext())+"&ppffget="+alumno.getPPFFDni(getApplicationContext());
-                Log.e("rutasaldo",ruta);
-                Lee2 lee2 = new Lee2();
-                lee2.execute(ruta);
-
-
-            }
-        });
 
         selSaldo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +195,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 caja2.setVisibility(View.VISIBLE);
                 caja3.setVisibility(View.GONE);
                 caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.GONE);
+                Alumno alumno = new Alumno();
+                ruta = conexion.getUrl(getApplicationContext());
+                ruta = ruta + "/controler/consultaAlumno.php?accionget=8&alumnoget="+alumno.getAlumnoElegido(getApplicationContext());
+                Log.e("rutasaldo",ruta);
+                Lee lee = new Lee();
+                lee.execute(ruta);
             }
         });
 
@@ -196,6 +212,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 caja2.setVisibility(View.GONE);
                 caja3.setVisibility(View.GONE);
                 caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.GONE);
             }
         });
 
@@ -206,6 +223,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 caja2.setVisibility(View.GONE);
                 caja3.setVisibility(View.GONE);
                 caja0.setVisibility(View.VISIBLE);
+                caja4.setVisibility(View.GONE);
             }
         });
 
@@ -216,6 +234,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 caja2.setVisibility(View.GONE);
                 caja3.setVisibility(View.GONE);
                 caja0.setVisibility(View.VISIBLE);
+                caja4.setVisibility(View.GONE);
             }
         });
 
@@ -226,6 +245,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 caja2.setVisibility(View.VISIBLE);
                 caja3.setVisibility(View.GONE);
                 caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.GONE);
+            }
+        });
+
+        volver4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                caja.setVisibility(View.GONE);
+                caja2.setVisibility(View.VISIBLE);
+                caja3.setVisibility(View.GONE);
+                caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.GONE);
+            }
+        });
+
+        niubiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                medio="link";
+                pagar.setText("PAGAR");
+                caja.setVisibility(View.GONE);
+                caja2.setVisibility(View.GONE);
+                caja3.setVisibility(View.GONE);
+                caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.VISIBLE);
+            }
+        });
+
+        yape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                medio="yape";
+                pagar.setText("YAPEAR");
+                caja.setVisibility(View.GONE);
+                caja2.setVisibility(View.GONE);
+                caja3.setVisibility(View.GONE);
+                caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.VISIBLE);
+            }
+        });
+
+        plin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                medio="plin";
+                pagar.setText("PLINEAR");
+                caja.setVisibility(View.GONE);
+                caja2.setVisibility(View.GONE);
+                caja3.setVisibility(View.GONE);
+                caja0.setVisibility(View.GONE);
+                caja4.setVisibility(View.VISIBLE);
             }
         });
 
@@ -344,6 +414,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if(ruta2.equals(rutaSeleccionada)){
                             if(estado2.equals("Finalizado")){
                                 texto = "La ruta "+ruta2+" no está operativa en estos momentos";
+                            } else if(estado2.equals("cancelada")){
+                                texto = "La ruta "+ruta2+" ha sido cancelada el día de hoy";
                             } else {
                                 texto = "La ruta "+ruta2+" se encuentra en marcha";
                             }
@@ -625,7 +697,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             progressDoalog.dismiss();
-            saldo.setText(result);
+            String[] data = result.split("___");
+            saldo.setText(data[0]);
+            rutaSeleccionada = data[1];
 
         }
     }
@@ -659,20 +733,98 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             progressDoalog.dismiss();
             saldo.setText(result);
             String ruta="";
-            if(pagolink.equals("5")){
-                ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1752465/info";
+            if(medio.equals("link")){
+                if(pagolink.equals("3")){
+                    ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1918768/info";
 
-            } else if(pagolink.equals("10")){
-                ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1890895/info";
+                } else if(pagolink.equals("12")){
+                    ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1890895/info";
 
-            } else if(pagolink.equals("20")){
-                ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1890902/info";
+                } else if(pagolink.equals("24")){
+                    ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1890902/info";
 
+                }
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse(ruta));
+                startActivity(intent);
+            } else if(medio.equals("yape")){
+                if(estaInstaladaAplicacion("com.bcp.innovacxion.yapeapp", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    startActivity(launchIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"La app no está instalada",Toast.LENGTH_LONG).show();
+                    Conexion conexion = new Conexion();
+                    Alumno alumno = new Alumno();
+                    ruta = conexion.getUrl(getApplicationContext());
+                    ruta = ruta + "/controler/consultaAlumno.php?accionget=91&saldoget="+pagolink+"&alumnoget="+alumno.getAlumnoElegido(getApplicationContext())+"&ppffget="+alumno.getPPFFDni(getApplicationContext())+"&medioget="+medio+"&rutaget="+rutaSeleccionada;
+
+                    Log.e("rutasaldo",ruta);
+                    Lee lee = new Lee();
+                    lee.execute(ruta);
+                }
+            } else {
+                if(estaInstaladaAplicacion("pe.com.interbank.mobilebanking", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    startActivity(launchIntent);
+                } else if(estaInstaladaAplicacion("com.bbva.nxt_peru", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    startActivity(launchIntent);
+                } else if(estaInstaladaAplicacion("pe.com.scotiabank.blpm.android.client", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    startActivity(launchIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"La app no está instalada",Toast.LENGTH_LONG).show();
+                    Conexion conexion = new Conexion();
+                    Alumno alumno = new Alumno();
+                    ruta = conexion.getUrl(getApplicationContext());
+                    ruta = ruta + "/controler/consultaAlumno.php?accionget=91&saldoget="+pagolink+"&alumnoget="+alumno.getAlumnoElegido(getApplicationContext())+"&ppffget="+alumno.getPPFFDni(getApplicationContext())+"&medioget="+medio+"&rutaget="+rutaSeleccionada;
+
+                    Log.e("rutasaldo",ruta);
+                    Lee lee = new Lee();
+                    lee.execute(ruta);
+                }
             }
-            //https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1752465/info
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse(ruta));
-            startActivity(intent);
+
+        }
+    }
+
+    public class Lee3 extends AsyncTask<String,Void,String> {
+
+        ProgressDialog progressDoalog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDoalog = new ProgressDialog(MapsActivity.this);
+            progressDoalog.setMax(100);
+            progressDoalog.setMessage("Leyendo....");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            String empresa2 = getDatos(params[0]);
+            return empresa2;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            progressDoalog.dismiss();
+            saldo.setText(result);
+
+            if(estaInstaladaAplicacion("com.bcp.innovacxion.yapeapp", getApplicationContext())){
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                startActivity(launchIntent);
+            } else {
+                Toast.makeText(getApplicationContext(),"La app no está instalada",Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
@@ -702,12 +854,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return url2;
     }
 
+    private boolean estaInstaladaAplicacion(String nombrePaquete, Context context) {
+
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getPackageInfo(nombrePaquete, PackageManager.GET_META_DATA);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("e",e+"");
+            return false;
+        }
+    }
+
     void Limpiar(){
         rutaA.setBackgroundResource(R.drawable.bordec2);
         rutaB.setBackgroundResource(R.drawable.bordec2);
         rutaC.setBackgroundResource(R.drawable.bordec2);
         rutaD.setBackgroundResource(R.drawable.bordec2);
         rutaE.setBackgroundResource(R.drawable.bordec2);
+    }
+
+    void Limpiar2(){
+        recarga3.setBackgroundResource(R.drawable.bordec2);
+        recarga12.setBackgroundResource(R.drawable.bordec2);
+        recarga24.setBackgroundResource(R.drawable.bordec2);
     }
 
     void ConsultaEstadoMovilidad(){
@@ -2044,6 +2214,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .title("Dirección2:" + direccion)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.home)));
 
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Conexion conexion = new Conexion();
+        Alumno alumno = new Alumno();
+        ruta = conexion.getUrl(getApplicationContext());
+        ruta = ruta + "/controler/consultaAlumno.php?accionget=8&alumnoget="+alumno.getAlumnoElegido(getApplicationContext());
+        Log.e("rutasaldo",ruta);
+        Lee lee = new Lee();
+        lee.execute(ruta);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Conexion conexion = new Conexion();
+        Alumno alumno = new Alumno();
+        ruta = conexion.getUrl(getApplicationContext());
+        ruta = ruta + "/controler/consultaAlumno.php?accionget=8&alumnoget="+alumno.getAlumnoElegido(getApplicationContext());
+        Log.e("rutasaldo",ruta);
+        Lee lee = new Lee();
+        lee.execute(ruta);
     }
 
 }

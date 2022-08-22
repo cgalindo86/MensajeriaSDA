@@ -60,14 +60,15 @@
             android:text="E"
             android:layout_width="50dp"
             android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/volver1"
-            android:textColor="#ffffff"
-            android:background="@color/colorAzul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:background="@color/colorAzul"
             android:text="VOLVER"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content" />
+            android:textColor="#ffffff" />
 
     </LinearLayout>
     <LinearLayout
@@ -97,14 +98,15 @@
             android:text="RECARGA"
             android:layout_width="110dp"
             android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/volver2"
-            android:textColor="#ffffff"
-            android:background="@color/colorAzul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:background="@color/colorAzul"
             android:text="VOLVER"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content" />
+            android:textColor="#ffffff" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/caja3"
@@ -113,41 +115,92 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <Button
+            android:id="@+id/niubiz"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAzul"
+            android:text="NIUBIZ"
+            android:textColor="#ffffff" />
 
         <Button
-            android:id="@+id/recarga5"
-            android:textColor="#ffffff"
-            android:background="@color/colorAzul"
+            android:id="@+id/plin"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="S/ 5.00"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/recarga10"
-            android:textColor="#ffffff"
             android:background="@color/colorAzul"
-            android:layout_margin="5dp"
-            android:text="S/ 10.00"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/recarga20"
-            android:textColor="#ffffff"
-            android:background="@color/colorAzul"
-            android:layout_margin="5dp"
-            android:text="S/ 20.00"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="PLIN"
+            android:textColor="#ffffff" />
 
+        <Button
+            android:id="@+id/yape"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAzul"
+            android:text="YAPE"
+            android:textColor="#ffffff" />
         <Button
             android:id="@+id/volver3"
-            android:textColor="#ffffff"
-            android:background="@color/colorRojo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:background="@color/colorRojo"
             android:text="VOLVER"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content" />
+            android:textColor="#ffffff" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/caja4"
+        android:background="#AAB8A1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/recarga3"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAzul"
+            android:text="S/ 3"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/recarga12"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAzul"
+            android:text="S/ 12"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/recarga24"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAzul"
+            android:text="S/ 24"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/pagar"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAzul"
+            android:textColor="#ffffff" />
+        <Button
+            android:id="@+id/volver4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorRojo"
+            android:text="VOLVER"
+            android:textColor="#ffffff" />
     </LinearLayout>
 
 </LinearLayout>
