@@ -117,7 +117,7 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/niubiz"
-            android:layout_width="50dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/colorAzul"
@@ -126,7 +126,7 @@
 
         <Button
             android:id="@+id/plin"
-            android:layout_width="50dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/colorAzul"
@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/colorAzul"
-            android:text="S/ 12"
+            android:text="S/ 6"
             android:textColor="#ffffff" />
 
         <Button
@@ -183,7 +183,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/colorAzul"
-            android:text="S/ 24"
+            android:text="S/ 30"
+            android:textColor="#ffffff" />
+        <Button
+            android:id="@+id/recargaOtro"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAzul"
+            android:text="OTRO"
             android:textColor="#ffffff" />
 
         <Button
@@ -202,5 +210,17 @@
             android:text="VOLVER"
             android:textColor="#ffffff" />
     </LinearLayout>
-
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/wp"
+            android:gravity="center"
+            android:background="@drawable/whatsapp2"
+            android:textAlignment="center"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+    </LinearLayout>
 </LinearLayout>

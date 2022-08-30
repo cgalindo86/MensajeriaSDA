@@ -284,11 +284,14 @@ public class MainActivity extends AppCompatActivity {
             String ppff[] = alumno.getPPFF(getApplicationContext()).split("&");
             txt.setText(ppff[0]);
             Log.e("roles2",alumno.getAlumnoPPFFRol(getApplicationContext()));
-            if(ppff[3].equals("PPFF")){
-                Limpiar1();
-            } else {
-                Limpiar2();
+            if(ppff.length>=3){
+                if(ppff[3].equals("PPFF")){
+                    Limpiar1();
+                } else {
+                    Limpiar2();
+                }
             }
+
 
             ActivityCompat.requestPermissions(this,
                     new String[]{

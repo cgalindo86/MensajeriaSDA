@@ -5,4 +5,6 @@
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
         AIzaSyDFNq15cbXQOnCKH_baJbY8YxMVgDjntps
     </string>
+    <string name="formato_fecha">yyyy-mm-dd</string>
+    <string name="formato_hora">hh:mm</string>
 </resources>

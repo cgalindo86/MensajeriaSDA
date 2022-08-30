@@ -1,6 +1,7 @@
 package com.ingenio.mensajeriasda;
 
 import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -46,7 +47,7 @@ import java.util.Calendar;
 public class BackgroundJobService extends JobService {
 
 
-    private static final String CHANNEL_ID = "com.ingenio.instantmessagingsda";
+    private static final String CHANNEL_ID = "com.ingenio.mensajeriasda";
     int notificationId;
     private Handler handler;
     Context context;
@@ -70,7 +71,7 @@ public class BackgroundJobService extends JobService {
             "2022-07-26","2022-07-27","2022-07-28","2022-07-29",
             "2022-07-30","2022-07-31","2022-08-06","2022-08-07",
             "2022-08-13","2022-08-14","2022-08-20","2022-08-21",
-            "2022-08-27","2022-08-28","2022-08-30","2022-09-03",
+            "2022-08-27","2022-08-30","2022-09-03",
             "2022-09-04","2022-09-10","2022-09-11","2022-09-17",
             "2022-09-18","2022-09-24","2022-09-25","2022-10-01",
             "2022-10-02","2022-10-03","2022-10-04","2022-10-05",
@@ -113,7 +114,7 @@ public class BackgroundJobService extends JobService {
         Log.e("eee",!Comparar(formattedDate,fechas)+"");
 
 
-        createNotificationChannel();
+        //createNotificationChannel();
 
         context = getApplicationContext();
 
@@ -159,6 +160,7 @@ public class BackgroundJobService extends JobService {
             public void call(final Object... args) {
                 Handler nHandler = new Handler(getMainLooper());
                 nHandler.post(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void run() {
                         //Toast.makeText(getApplicationContext(),"recibe info 01",Toast.LENGTH_LONG).show();
@@ -225,21 +227,28 @@ public class BackgroundJobService extends JobService {
                             int icono = R.drawable.icono_blanco;
 
                             notificationId++;
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(BackgroundJobService.this);
                             Intent intent = new Intent(BackgroundJobService.this, DetalleMensaje.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             PendingIntent pendingIntent = PendingIntent.getActivity(BackgroundJobService.this, 0, intent, 0);
 
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(BackgroundJobService.this, CHANNEL_ID)
-                                    .setSmallIcon(icono)
+                            CharSequence name = getString(R.string.channel_name);
+                            String description = getString(R.string.channel_description);
+                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+                            channel.setDescription(description);
+                            Notification notification = new Notification.Builder(BackgroundJobService.this)
                                     .setContentTitle("SDA Instant Messaging de "+alumnoNombre)
                                     .setContentText(asunto)
-                                    .setStyle(new NotificationCompat.BigTextStyle()
-                                            .bigText(asunto))
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                    .setSmallIcon(icono)
+                                    .setChannelId(CHANNEL_ID)
                                     .setContentIntent(pendingIntent)
-                                    .setAutoCancel(true);
-                            notificationManager.notify(notificationId, builder.build());
+                                    .build();
+                            NotificationManager mNotificationManager =
+                                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                mNotificationManager.createNotificationChannel(channel);
+                            }
+                            mNotificationManager.notify(notificationId, notification);
                         } else {
                             Log.e("no contenido",mial);
                         }
@@ -254,6 +263,7 @@ public class BackgroundJobService extends JobService {
             public void call(final Object... args) {
                 Handler nHandler = new Handler(getMainLooper());
                 nHandler.post(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void run() {
                         //Toast.makeText(getApplicationContext(),"recibe info 01",Toast.LENGTH_LONG).show();
@@ -320,21 +330,28 @@ public class BackgroundJobService extends JobService {
                             int icono = R.drawable.icono_blanco;
 
                             notificationId++;
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(BackgroundJobService.this);
                             Intent intent = new Intent(BackgroundJobService.this, DetalleMensaje.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             PendingIntent pendingIntent = PendingIntent.getActivity(BackgroundJobService.this, 0, intent, 0);
 
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(BackgroundJobService.this, CHANNEL_ID)
-                                    .setSmallIcon(icono)
+                            CharSequence name = getString(R.string.channel_name);
+                            String description = getString(R.string.channel_description);
+                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+                            channel.setDescription(description);
+                            Notification notification = new Notification.Builder(BackgroundJobService.this)
                                     .setContentTitle("SDA Instant Messaging de "+alumnoNombre)
                                     .setContentText(asunto)
-                                    .setStyle(new NotificationCompat.BigTextStyle()
-                                            .bigText(asunto))
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                    .setSmallIcon(icono)
+                                    .setChannelId(CHANNEL_ID)
                                     .setContentIntent(pendingIntent)
-                                    .setAutoCancel(true);
-                            notificationManager.notify(notificationId, builder.build());
+                                    .build();
+                            NotificationManager mNotificationManager =
+                                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                mNotificationManager.createNotificationChannel(channel);
+                            }
+                            mNotificationManager.notify(notificationId, notification);
                         } else {
                             Log.e("no contenido",mial);
                         }

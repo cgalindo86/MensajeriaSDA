@@ -1,6 +1,9 @@
 package com.ingenio.mensajeriasda.controler;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,6 +17,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -26,10 +30,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -48,9 +54,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ingenio.mensajeriasda.BackgroundIntentService;
 import com.ingenio.mensajeriasda.R;
 import com.ingenio.mensajeriasda.model.Alumno;
 import com.ingenio.mensajeriasda.model.Coordenadas;
+import com.ingenio.mensajeriasda.model.MensajeModel;
 import com.ingenio.mensajeriasda.service.Conexion;
 
 import org.json.JSONException;
@@ -80,16 +88,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double nDistan = 0.0;
     Boolean valor = false;
     Button btn,rutaA,rutaB,rutaC,rutaD, rutaE,volver1,volver2,volver3,volver4,selRuta,selSaldo,recarga;
-    Button recarga3,recarga12,recarga24,niubiz,plin,yape,pagar;
+    Button recarga3,recarga12,recarga24,recargaOtro,niubiz,plin,yape,pagar;
     com.github.nkzawa.socketio.client.Socket socket;
     Context context;
     TextView saldo;
+    ImageView whatsapp;
     int cuenta=0,cuentaA=0;
     double[][] matrizA = {
             {-12.084160, -77.089899},{-12.084116, -77.089859},{-12.084149, -77.089803},
             {-12.084175, -77.089752},{-12.084260, -77.089556},{-12.084300, -77.089482},
             {-12.084327, -77.089431},{-12.084394, -77.089300}
     };
+    private static final String CHANNEL_ID = "com.ingenio.mensajeriasda";
+    int notificationId;
+    private Handler handler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +119,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lee.execute(ruta);
 ////-12.084032, -77.089987
 
+        whatsapp = (ImageView) findViewById(R.id.wp);
+        whatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(estaInstaladaAplicacion("com.whatsapp.w4b", getApplicationContext())){
+                    String telefono="";
+                    /*
+                    gilberto mendez
+                    manuel heredia
+                    miguel carrasco
+                    */
+                    if(rutaSeleccionada.equals("A")){
+                        telefono="996997920";
+                    } else if(rutaSeleccionada.equals("B")){
+                        telefono="970338897";
+                    } else if(rutaSeleccionada.equals("E")){
+                        telefono="936093035";
+                    }
 
+                    String mensajeria="https://api.whatsapp.com/send?phone=51"+telefono
+                            +"&text=Estimado%20personal%20dominguino,"
+                            +"%20quiero%20hacer%20una%20consulta%20sobre%20movilidades:%20";
+
+                    Uri uri = Uri.parse(mensajeria);
+                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                    i.setPackage("com.whatsapp.w4b");
+                    startActivity(i);
+                } else if(estaInstaladaAplicacion("com.whatsapp", getApplicationContext())){
+                    String telefono="";
+                    /*
+                    gilberto mendez
+                    manuel heredia
+                    miguel carrasco
+                    */
+                    if(rutaSeleccionada.equals("A")){
+                        telefono="996997920";
+                    } else if(rutaSeleccionada.equals("B")){
+                        telefono="970338897";
+                    } else if(rutaSeleccionada.equals("E")){
+                        telefono="936093035";
+                    } else {
+                        telefono="936093035";
+                    }
+
+                    String mensajeria="https://api.whatsapp.com/send?phone=51"+telefono
+                            +"&text=Estimado%20personal%20dominguino,"
+                            +"%20quiero%20hacer%20una%20consulta%20sobre%20movilidades:%20";
+
+                    Uri uri = Uri.parse(mensajeria);
+                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                    i.setPackage("com.whatsapp");
+                    startActivity(i);
+                }
+            }
+        });
         caja0 = (LinearLayout) findViewById(R.id.caja0);
         caja = (LinearLayout) findViewById(R.id.caja);
         caja2 = (LinearLayout) findViewById(R.id.caja2);
@@ -129,9 +196,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         recarga3 = (Button) findViewById(R.id.recarga3);
         recarga12 = (Button) findViewById(R.id.recarga12);
         recarga24 = (Button) findViewById(R.id.recarga24);
+        recargaOtro = (Button) findViewById(R.id.recargaOtro);
 
         yape = (Button) findViewById(R.id.yape);
         plin = (Button) findViewById(R.id.plin);
+        plin.setVisibility(View.GONE);
+        yape.setVisibility(View.GONE);
         niubiz = (Button) findViewById(R.id.niubiz);
         pagar = (Button) findViewById(R.id.pagar);
 
@@ -158,7 +228,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         recarga12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pagolink="12";
+                pagolink="6";
                 Limpiar2();
                 recarga12.setBackgroundResource(R.drawable.bordec1);
             }
@@ -167,9 +237,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         recarga24.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pagolink="24";
+                pagolink="30";
                 Limpiar2();
                 recarga24.setBackgroundResource(R.drawable.bordec1);
+            }
+        });
+
+        recargaOtro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pagolink="otro";
+                Limpiar2();
+                recargaOtro.setBackgroundResource(R.drawable.bordec1);
             }
         });
 
@@ -177,12 +256,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 Limpiar2();
+                if(medio.equals("link")){
+                    if(pagolink.equals("3")){
+                        ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1918768/info";
 
-                ruta = conexion.getUrl(getApplicationContext());
-                ruta = ruta + "/controler/consultaAlumno.php?accionget=9&saldoget="+pagolink+"&alumnoget="+alumno.getAlumnoElegido(getApplicationContext())+"&ppffget="+alumno.getPPFFDni(getApplicationContext())+"&medioget="+medio+"&rutaget="+rutaSeleccionada;
-                Log.e("rutasaldo",ruta);
-                Lee2 lee2 = new Lee2();
-                lee2.execute(ruta);
+                    } else if(pagolink.equals("6")){
+                        ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1890902/info";
+
+                    } else if(pagolink.equals("30")){
+                        ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1890895/info";
+
+                    } else if(pagolink.equals("otro")){
+                        ruta = "https://pagolink.niubiz.com.pe/pagoseguro/AsociacionEducativaSantoDomingoelApostol/1932696/info";
+
+                    }
+
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse(ruta));
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -277,12 +370,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 medio="yape";
+                /*
                 pagar.setText("YAPEAR");
                 caja.setVisibility(View.GONE);
                 caja2.setVisibility(View.GONE);
                 caja3.setVisibility(View.GONE);
                 caja0.setVisibility(View.GONE);
                 caja4.setVisibility(View.VISIBLE);
+                if(estaInstaladaAplicacion("com.bcp.innovacxion.yapeapp", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    startActivity(launchIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"Abra la app de YAPE y realice el YAPEO",Toast.LENGTH_LONG).show();
+
+                }*/
+                Toast.makeText(getApplicationContext(),"Abra la app de YAPE y al finalizar comparta con nuestra app el comprobante",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -290,12 +392,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 medio="plin";
-                pagar.setText("PLINEAR");
+                /*pagar.setText("PLINEAR");
                 caja.setVisibility(View.GONE);
                 caja2.setVisibility(View.GONE);
                 caja3.setVisibility(View.GONE);
                 caja0.setVisibility(View.GONE);
                 caja4.setVisibility(View.VISIBLE);
+                if(estaInstaladaAplicacion("pe.com.interbank.mobilebanking", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("pe.com.interbank.mobilebanking");
+                    startActivity(launchIntent);
+                } else if(estaInstaladaAplicacion("com.bbva.nxt_peru", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bbva.nxt_peru");
+                    startActivity(launchIntent);
+                } else if(estaInstaladaAplicacion("pe.com.scotiabank.blpm.android.client", getApplicationContext())){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("pe.com.scotiabank.blpm.android.client");
+                    startActivity(launchIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"Abra la app de su banco y realice el PLIN",Toast.LENGTH_LONG).show();
+
+                }*/
+
+                Toast.makeText(getApplicationContext(),"Abra la app de su banco y al finalizar comparta con nuestra app el comprobante",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -316,6 +433,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 rutaA.setBackgroundResource(R.drawable.bordec1);
                 ConsultaEstadoMovilidad();
                 MarcadoresRutaA();
+                alumno.setAlumnoRuta("A",getApplicationContext());
             }
         });
 
@@ -327,6 +445,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 rutaB.setBackgroundResource(R.drawable.bordec1);
                 ConsultaEstadoMovilidad();
                 MarcadoresRutaB();
+                alumno.setAlumnoRuta("B",getApplicationContext());
             }
         });
 
@@ -338,6 +457,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 rutaC.setBackgroundResource(R.drawable.bordec1);
                 ConsultaEstadoMovilidad();
                 MarcadoresRutaC();
+                alumno.setAlumnoRuta("C",getApplicationContext());
             }
         });
 
@@ -349,6 +469,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 rutaD.setBackgroundResource(R.drawable.bordec1);
                 ConsultaEstadoMovilidad();
                 MarcadoresRutaD();
+                alumno.setAlumnoRuta("D",getApplicationContext());
             }
         });
 
@@ -360,6 +481,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 rutaE.setBackgroundResource(R.drawable.bordec1);
                 ConsultaEstadoMovilidad();
                 MarcadoresRutaE();
+                alumno.setAlumnoRuta("E",getApplicationContext());
             }
         });
 
@@ -470,7 +592,252 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        socket.on("movilidad "+alumno.getPPFFDni(getApplicationContext()), new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                Handler nHandler = new Handler(getMainLooper());
+                nHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Toast.makeText(getApplicationContext(),"recibe info 01",Toast.LENGTH_LONG).show();
+                        JSONObject data = (JSONObject) args[0];
+                        String laruta;
+                        double lat2, lng2;
+                        try {
+                            lat2 = Double.parseDouble(data.getString("lat"));
+                            lng2 = Double.parseDouble(data.getString("lng"));
+                            laruta = data.getString("ruta");
+                            //lng2 = Double.parseDouble("-77.0260600");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        Log.e("antes",lat2+" - "+lng2);
+                        //Toast.makeText(context,lat2+" - "+lng2+" - "+laruta+" - "+rutaSeleccionada,Toast.LENGTH_LONG).show();
+                        if(laruta.equals("A") && laruta.equals(rutaSeleccionada)){
+                            AgregarMarcador2(lat2,lng2);
+                        } else if(laruta.equals("B") && laruta.equals(rutaSeleccionada)){
+                            AgregarMarcador3(lat2,lng2);
+                        } else if(laruta.equals("C") && laruta.equals(rutaSeleccionada)){
+                            AgregarMarcador4(lat2,lng2);
+                        } else if(laruta.equals("D") && laruta.equals(rutaSeleccionada)){
+                            AgregarMarcador5(lat2,lng2);
+                        } else if(laruta.equals("E") && laruta.equals(rutaSeleccionada)){
+                            AgregarMarcador5(lat2,lng2);
+                        }
+
+
+                    }
+                });
+            }
+        });
+
+        socket.on("movilidad "+alumno.getPPFFDni(getApplicationContext()), new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                Handler nHandler = new Handler(getMainLooper());
+                nHandler.post(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void run() {
+                        //Toast.makeText(getApplicationContext(),"recibe info 01",Toast.LENGTH_LONG).show();
+                        JSONObject data = (JSONObject) args[0];
+                        String ruta,ppff,profesor,
+                                alumno,alumnoNombre,lat,lng,asunto;
+
+                        try {
+                            ruta = data.getString("ruta");
+                            ppff = data.getString("ppff");
+                            profesor = data.getString("profesor");
+                            alumno = data.getString("alumno");
+                            alumnoNombre = data.getString("alumnoNombre");
+                            lat = data.getString("lat");
+                            lng = data.getString("lng");
+                            asunto = data.getString("asunto");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+
+                        Log.e("MainActivity",ruta);
+                        Log.e("MainActivity",ppff);
+                        Log.e("MainActivity",profesor);
+                        Log.e("alumno",alumno);
+                        Log.e("MainActivity",alumnoNombre);
+                        Log.e("MainActivity",lat);
+                        Log.e("MainActivity",asunto);
+                        Log.e("MainActivity",lng);
+
+                        Alumno mialumno = new Alumno();
+                        String mial = mialumno.getAlumnos(getApplicationContext());
+
+                        if(mial.contains(alumno)
+                                && ppff.equals(mialumno.getPPFFDni(getApplicationContext()))
+
+
+                        ){
+
+                            int icono = R.drawable.icono_blanco;
+
+                            notificationId++;
+                            Intent intent = new Intent(MapsActivity.this, DetalleMensaje.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, 0);
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MapsActivity.this);
+
+                            CharSequence name = getString(R.string.channel_name);
+                            String description = getString(R.string.channel_description);
+                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+                            channel.setDescription(description);
+                            Notification notification = new Notification.Builder(MapsActivity.this)
+                                    .setContentTitle("Ruta "+ruta)
+                                    .setContentText(asunto)
+                                    .setSmallIcon(icono)
+                                    .setChannelId(CHANNEL_ID)
+                                    .setContentIntent(pendingIntent)
+                                    .build();
+                            NotificationManager mNotificationManager =
+                                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                mNotificationManager.createNotificationChannel(channel);
+                            }
+                            mNotificationManager.notify(notificationId, notification);
+                        } else {
+                            Log.e("no contenido",mial);
+                        }
+
+                    }
+                });
+            }
+        });
+
+        socket.on("recibe info3 "+alumno.getPPFFDni(getApplicationContext()), new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                Handler nHandler = new Handler(getMainLooper());
+                nHandler.post(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void run() {
+                        //Toast.makeText(getApplicationContext(),"recibe info 01",Toast.LENGTH_LONG).show();
+                        JSONObject data = (JSONObject) args[0];
+                        String supervisor,supervisorMail,supervisorCelular,
+                                id_ppff,alumno,alumnoNombre,fecha,asunto,curso,mensaje,hora;
+                        try {
+                            supervisor = data.getString("supervisor");
+                            supervisorMail = data.getString("supervisorMail");
+                            supervisorCelular = data.getString("supervisorCelular");
+                            id_ppff = data.getString("id_ppff");
+                            alumno = data.getString("alumno");
+                            alumnoNombre = data.getString("alumnoNombre");
+                            fecha = data.getString("fecha");
+                            hora = data.getString("hora");
+                            asunto = data.getString("asunto");
+                            curso = data.getString("curso");
+                            //mensaje = data.getString("mensaje");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+
+                        Log.d("MainActivity",supervisor);
+                        Log.d("MainActivity",supervisorMail);
+                        Log.d("MainActivity",supervisorCelular);
+                        Log.d("MainActivity",id_ppff);
+                        Log.e("alumno",alumno);
+                        Log.d("MainActivity",alumnoNombre);
+                        Log.d("MainActivity",fecha);
+                        Log.d("MainActivity",asunto);
+                        Log.d("MainActivity",curso);
+
+                        Alumno mialumno = new Alumno();
+                        String mial = mialumno.getAlumnos(getApplicationContext());
+                        String mensajeria = supervisor+"%"+supervisorMail+"%"+supervisorCelular+"%"+
+                                id_ppff+"%"+alumno+"%"+alumnoNombre+"%"+fecha+"%"+hora+"%"+asunto+"%"+curso+"%#";
+
+                        //mialumno.setAlumnoElegido(alumno,getApplicationContext());
+
+                        MensajeModel mensajeModel = new MensajeModel();
+                        mensajeModel.setMensajeElegido(mensajeria,getApplicationContext());
+                        String mensajeria2 = mensajeModel.getMensajeNotificacion(getApplicationContext());
+
+                        //Log.e("mensajeria",mensajeria);
+                        //Log.e("mensajeria2",mensajeria2);
+
+                        if(mial.contains(alumno)
+                                && id_ppff.equals(mialumno.getPPFFDni(getApplicationContext()))
+                                && !mensajeria2.equals(mensajeria)
+
+                        ){
+                            Log.e("contenido",mial);
+                            mensajeria2 = mensajeria;
+                            //String mensajeria = supervisor+"%"+supervisorMail+"%"+supervisorCelular+"%"+
+                            //        id_ppff+"%"+alumno+"%"+alumnoNombre+"%"+fecha+"%"+hora+"%"+asunto+"%"+curso+"%#";
+                            //MensajeModel mensajeModel = new MensajeModel();
+                            String eldato = mensajeModel.getMensaje(getApplicationContext());
+                            mensajeria = mensajeria + eldato;
+                            mensajeModel.setMensaje(mensajeria,getApplicationContext());
+                            mensajeModel.setMensajeNotificacion(mensajeria2,getApplicationContext());
+
+                            int icono = R.drawable.icono_blanco;
+
+                            notificationId++;
+                            Intent intent = new Intent(MapsActivity.this, DetalleMensaje.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, 0);
+
+                            CharSequence name = getString(R.string.channel_name);
+                            String description = getString(R.string.channel_description);
+                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+                            channel.setDescription(description);
+                            Notification notification = new Notification.Builder(MapsActivity.this)
+                                    .setContentTitle("SDA Instant Messaging de "+alumnoNombre)
+                                    .setContentText(asunto)
+                                    .setSmallIcon(icono)
+                                    .setChannelId(CHANNEL_ID)
+                                    .setContentIntent(pendingIntent)
+                                    .build();
+                            NotificationManager mNotificationManager =
+                                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                mNotificationManager.createNotificationChannel(channel);
+                            }
+                            mNotificationManager.notify(notificationId, notification);
+                        } else {
+                            Log.e("no contenido",mial);
+                        }
+
+                    }
+                });
+            }
+        });
+
         //miUbicacion();
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mNotificationManager.createNotificationChannel(channel);
+            }
+            //NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            //notificationManager.createNotificationChannel(channel);
+        }
     }
 
 
@@ -765,13 +1132,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             } else {
                 if(estaInstaladaAplicacion("pe.com.interbank.mobilebanking", getApplicationContext())){
-                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("pe.com.interbank.mobilebanking");
                     startActivity(launchIntent);
                 } else if(estaInstaladaAplicacion("com.bbva.nxt_peru", getApplicationContext())){
-                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bbva.nxt_peru");
                     startActivity(launchIntent);
                 } else if(estaInstaladaAplicacion("pe.com.scotiabank.blpm.android.client", getApplicationContext())){
-                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.bcp.innovacxion.yapeapp");
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("pe.com.scotiabank.blpm.android.client");
                     startActivity(launchIntent);
                 } else {
                     Toast.makeText(getApplicationContext(),"La app no está instalada",Toast.LENGTH_LONG).show();
@@ -878,6 +1245,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         recarga3.setBackgroundResource(R.drawable.bordec2);
         recarga12.setBackgroundResource(R.drawable.bordec2);
         recarga24.setBackgroundResource(R.drawable.bordec2);
+        recargaOtro.setBackgroundResource(R.drawable.bordec2);
     }
 
     void ConsultaEstadoMovilidad(){
@@ -1018,15 +1386,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .width(5)
                 .color(Color.RED));
         Polyline line18 = mMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(-12.078008, -77.084506), new LatLng(-12.074631, -77.083787))
+                .add(new LatLng(-12.078008, -77.084506), new LatLng(-12.077905, -77.088582))
                 .width(5)
                 .color(Color.RED));
         Polyline line19 = mMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(-12.074631, -77.083787), new LatLng(-12.073584, -77.087023))
+                .add(new LatLng(-12.077905, -77.088582), new LatLng(-12.077489, -77.088552))
                 .width(5)
                 .color(Color.RED));
         Polyline line20 = mMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(-12.073584, -77.087023), new LatLng(-12.072947, -77.086758))
+                .add(new LatLng(-12.077489, -77.088552), new LatLng(-12.072947, -77.086758))
                 .width(5)
                 .color(Color.RED));
         Polyline line21 = mMap.addPolyline(new PolylineOptions()
@@ -1066,14 +1434,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .position(coordenadas2)
                 .title("Dirección2:" + direccion)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.home)));
-        /*Polyline line29 = mMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(-12.074631, -77.083787), new LatLng(-12.073584, -77.087023))
-                .width(5)
-                .color(Color.RED));
-        Polyline line30 = mMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(-12.073584, -77.087023), new LatLng(-12.072947, -77.086758))
-                .width(5)
-                .color(Color.RED));*/
 
     }
 
